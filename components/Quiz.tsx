@@ -62,7 +62,6 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   useEffect(() => {
       if (sourceType === 'AI' && !isKeySaved) {
           // If user switches to AI but has no key, that's fine (they see input).
-          // But if they removed the key while in AI mode, we stay in AI mode to show them the input field.
       }
   }, [isKeySaved, sourceType]);
 
@@ -74,33 +73,44 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
       setKeyError(null);
 
       try {
+          // Validate the key first
           const isValid = await validateApiKey(trimmedKey);
+          
           if (isValid) {
               localStorage.setItem('fmge_gemini_key', trimmedKey);
               setIsKeySaved(true);
               setIsEditingKey(false);
+              setKeyError(null);
           } else {
-              setKeyError("Authentication Failed: This API Key appears invalid or expired.");
+              setIsKeySaved(false);
+              setKeyError("Verification Failed: The key is invalid. Please check you copied it correctly.");
           }
       } catch (e) {
-          setKeyError("Network error while verifying key.");
+          setIsKeySaved(false);
+          setKeyError("Network error while verifying key. Please check your connection.");
       } finally {
           setIsValidatingKey(false);
       }
   };
 
   const removeApiKey = () => {
-      if (window.confirm("Remove API Key? You will need to re-enter it to use AI features.")) {
-        localStorage.removeItem('fmge_gemini_key');
-        setApiKey('');
-        setIsKeySaved(false);
-        setIsEditingKey(false);
-        setCustomTopic(''); // Reset topic
-      }
+    // Immediate removal logic
+    localStorage.removeItem('fmge_gemini_key');
+    setApiKey(''); // Clear the input field
+    setIsKeySaved(false); // Update state to show input mode
+    setIsEditingKey(false);
+    setCustomTopic('');
+    setKeyError(null);
   };
 
   const enableEditKey = () => {
       setIsEditingKey(true);
+      setKeyError(null);
+  };
+
+  const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setApiKey(e.target.value);
+      if (keyError) setKeyError(null); // Clear error when user starts typing
   };
 
   const startDailyQuiz = async () => {
@@ -200,6 +210,10 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
     onComplete(result);
   };
 
+  // Helper for API Key Validation State
+  const currentKeyLength = apiKey.trim().length;
+  const isValidFormat = apiKey.trim().startsWith('AIza') && currentKeyLength === 39;
+
   // RENDER: SETUP STAGE
   if (stage === 'SETUP') {
     return (
@@ -288,31 +302,39 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                             </p>
                             
                             {keyError && (
-                                <div className="text-xs text-red-400 bg-red-900/20 p-2 rounded border border-red-900/50 flex items-center gap-2">
+                                <div className="text-xs text-red-400 bg-red-900/20 p-2 rounded border border-red-900/50 flex items-center gap-2 animate-pulse">
                                     <AlertCircle size={12} />
                                     {keyError}
                                 </div>
                             )}
 
-                            <div className="flex flex-col sm:flex-row gap-2">
-                                <input 
-                                    type="password"
-                                    value={apiKey}
-                                    onChange={(e) => setApiKey(e.target.value)}
-                                    disabled={isValidatingKey}
-                                    placeholder="Paste key starting with AIza..."
-                                    className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-all disabled:opacity-50"
-                                />
-                                <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2 items-start">
+                                <div className="flex-1 w-full">
+                                    <input 
+                                        type="password"
+                                        value={apiKey}
+                                        onChange={handleApiKeyChange}
+                                        disabled={isValidatingKey}
+                                        placeholder="Paste key starting with AIza..."
+                                        className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 transition-all disabled:opacity-50"
+                                    />
+                                    {apiKey.length > 0 && (
+                                        <div className={`text-[10px] mt-1 text-right ${currentKeyLength === 39 ? 'text-green-500' : 'text-slate-500'}`}>
+                                            Length: {currentKeyLength}/39 chars
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex gap-2 w-full sm:w-auto">
                                     <button 
                                         onClick={saveApiKey}
-                                        disabled={!apiKey.trim() || isValidatingKey}
-                                        className="flex-1 sm:flex-none min-w-[120px] bg-purple-600 disabled:bg-slate-700 disabled:text-slate-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2"
+                                        disabled={!isValidFormat || isValidatingKey}
+                                        className="flex-1 sm:flex-none min-w-[120px] bg-purple-600 disabled:bg-slate-700 disabled:text-slate-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+                                        title={!isValidFormat ? "Key must start with 'AIza' and be 39 characters long" : "Verify Key"}
                                     >
                                         {isValidatingKey ? (
                                             <>
                                                 <Loader2 size={16} className="animate-spin" />
-                                                Verifying...
+                                                Testing...
                                             </>
                                         ) : (
                                             isKeySaved ? 'Update' : 'Verify & Save'
@@ -321,7 +343,7 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                                     
                                     {isEditingKey && isKeySaved && !isValidatingKey && (
                                         <button 
-                                            onClick={() => setIsEditingKey(false)} 
+                                            onClick={() => { setIsEditingKey(false); setKeyError(null); }} 
                                             className="px-3 py-2 text-slate-400 hover:text-white bg-slate-800 rounded-lg border border-slate-700"
                                         >
                                             Cancel

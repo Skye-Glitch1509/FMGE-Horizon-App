@@ -7,25 +7,37 @@ import { Question } from "../types";
  */
 export const validateApiKey = async (apiKey: string): Promise<boolean> => {
   // 1. Structural Check
-  if (!apiKey || !apiKey.startsWith("AIza")) {
+  // Google API keys are strictly 39 characters long and start with "AIza"
+  if (!apiKey || !apiKey.startsWith("AIza") || apiKey.length !== 39) {
     return false;
   }
 
+  // Create a fresh instance for every validation to ensure no stale config
   const ai = new GoogleGenAI({ apiKey });
+  
+  // Use the specific model we intend to use for the quiz
   const modelId = "gemini-2.5-flash";
 
   try {
     // 2. Functional Check (Lightweight request)
+    // We simply try to generate content. If the key is invalid (400) or blocked (403),
+    // this will throw an error. If it succeeds (even with empty text), the key is valid.
+    // We add a timestamp to prevent caching of the validation request.
     await ai.models.generateContent({
       model: modelId,
-      contents: { parts: [{ text: "test" }] },
+      contents: { parts: [{ text: `Test connection ${Date.now()}` }] },
       config: {
-        maxOutputTokens: 1 // Minimize cost/latency
+        maxOutputTokens: 1 // Minimal output to save tokens/latency
       }
     });
+
+    // If we reached here, the API accepted our request.
     return true;
+
   } catch (error) {
-    console.warn("API Key Validation Failed:", error);
+    // Explicitly catch errors to return false. 
+    // This handles 400 (Invalid Key), 403 (Quota/Perms), and network errors.
+    console.error("API Validation Failed:", error);
     return false;
   }
 };
@@ -38,8 +50,8 @@ export const generateQuestionsWithAI = async (
 ): Promise<Question[]> => {
   
   // Client-side check before attempting request
-  if (!apiKey.startsWith("AIza")) {
-     throw new Error("Invalid API Key format. Keys must start with 'AIza'.");
+  if (!apiKey.startsWith("AIza") || apiKey.length !== 39) {
+     throw new Error("Invalid API Key format. Keys must start with 'AIza' and be 39 characters long.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
