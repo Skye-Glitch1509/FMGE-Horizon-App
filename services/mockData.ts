@@ -1,3 +1,4 @@
+
 import { Question, SyllabusSubject } from '../types';
 
 export const SYLLABUS_DATA: SyllabusSubject[] = [
@@ -128,6 +129,33 @@ export const QUESTION_BANK: Question[] = [
     subject: "Anatomy",
     topic: "Skull Foramina"
   },
+  {
+    id: 1004,
+    text: "Erb's Palsy involves injury to which nerve roots?",
+    options: ["C5, C6", "C8, T1", "C7", "T1, T2"],
+    correctAnswerIndex: 0,
+    explanation: "Erb's palsy is caused by injury to the upper trunk of the brachial plexus (C5, C6), leading to 'waiter's tip' deformity.",
+    subject: "Anatomy",
+    topic: "Brachial Plexus"
+  },
+  {
+    id: 1005,
+    text: "Which part of the duodenum is crossed anteriorly by the superior mesenteric vessels?",
+    options: ["First part", "Second part", "Third part", "Fourth part"],
+    correctAnswerIndex: 2,
+    explanation: "The third part (horizontal) of the duodenum is crossed anteriorly by the SMA and SMV.",
+    subject: "Anatomy",
+    topic: "Abdomen"
+  },
+  {
+    id: 1006,
+    text: "Winged scapula is caused by injury to:",
+    options: ["Long thoracic nerve", "Dorsal scapular nerve", "Axillary nerve", "Suprascapular nerve"],
+    correctAnswerIndex: 0,
+    explanation: "Injury to the Long Thoracic Nerve results in paralysis of the Serratus Anterior, causing winged scapula.",
+    subject: "Anatomy",
+    topic: "Upper Limb Nerves"
+  },
 
   // --- PHYSIOLOGY ---
   {
@@ -156,6 +184,33 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Type II Pneumocytes produce surfactant (dipalmitoyl phosphatidylcholine) to reduce surface tension.",
     subject: "Physiology",
     topic: "Respiratory Physiology"
+  },
+  {
+    id: 2004,
+    text: "Which hormone is primarily responsible for the LH surge?",
+    options: ["Progesterone", "Estrogen", "Inhibin", "FSH"],
+    correctAnswerIndex: 1,
+    explanation: "High levels of Estrogen exert positive feedback on the pituitary, triggering the LH surge and ovulation.",
+    subject: "Physiology",
+    topic: "Endocrinology"
+  },
+  {
+    id: 2005,
+    text: "The primary pacemaker of the heart is:",
+    options: ["AV Node", "Bundle of His", "SA Node", "Purkinje Fibers"],
+    correctAnswerIndex: 2,
+    explanation: "The SA Node has the highest rate of automaticity, making it the primary pacemaker.",
+    subject: "Physiology",
+    topic: "Cardiovascular"
+  },
+  {
+    id: 2006,
+    text: "Renin is secreted by:",
+    options: ["Macula Densa", "Juxtaglomerular cells", "Mesangial cells", "Podocytes"],
+    correctAnswerIndex: 1,
+    explanation: "Juxtaglomerular (JG) cells in the afferent arteriole secrete Renin in response to low BP.",
+    subject: "Physiology",
+    topic: "Renal"
   },
 
   // --- BIOCHEMISTRY ---
@@ -186,6 +241,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "Biochemistry",
     topic: "Amino Acid Metabolism"
   },
+  {
+    id: 3004,
+    text: "Which is the most common enzyme defect in Urea Cycle Disorders?",
+    options: ["Ornithine Transcarbamylase (OTC)", "Carbamoyl Phosphate Synthetase I", "Arginase", "Argininosuccinate Lyase"],
+    correctAnswerIndex: 0,
+    explanation: "OTC deficiency is the most common urea cycle disorder and is X-linked.",
+    subject: "Biochemistry",
+    topic: "Urea Cycle"
+  },
+  {
+    id: 3005,
+    text: "Ketone bodies are synthesized in:",
+    options: ["Liver Mitochondria", "Liver Cytosol", "Kidney", "Muscle"],
+    correctAnswerIndex: 0,
+    explanation: "Ketogenesis occurs in the mitochondria of liver cells.",
+    subject: "Biochemistry",
+    topic: "Lipid Metabolism"
+  },
 
   // --- PATHOLOGY ---
   {
@@ -214,6 +287,24 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Owl-eye appearance Reed-Sternberg cells are hallmark of Hodgkin's Lymphoma.",
     subject: "Pathology",
     topic: "Hematology"
+  },
+  {
+    id: 4004,
+    text: "Aschoff bodies are pathognomonic for:",
+    options: ["Rheumatic Fever", "Infective Endocarditis", "Myocardial Infarction", "TB Pericarditis"],
+    correctAnswerIndex: 0,
+    explanation: "Aschoff bodies are granulomatous lesions found in Rheumatic Heart Disease.",
+    subject: "Pathology",
+    topic: "Cardiovascular Pathology"
+  },
+  {
+    id: 4005,
+    text: "Which stain is used for Amyloid?",
+    options: ["H&E", "Congo Red", "PAS", "Giemsa"],
+    correctAnswerIndex: 1,
+    explanation: "Congo Red stain demonstrates apple-green birefringence under polarized light for amyloid.",
+    subject: "Pathology",
+    topic: "Stains"
   },
 
   // --- MICROBIOLOGY ---
@@ -244,6 +335,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "Microbiology",
     topic: "GI Infections"
   },
+  {
+    id: 5004,
+    text: "The vector for Japanese Encephalitis is:",
+    options: ["Anopheles", "Aedes", "Culex", "Mansonia"],
+    correctAnswerIndex: 2,
+    explanation: "Culex mosquitoes (specifically Culex tritaeniorhynchus) transmit JE.",
+    subject: "Microbiology",
+    topic: "Virology"
+  },
+  {
+    id: 5005,
+    text: "Lowenstein-Jensen (LJ) medium is used for:",
+    options: ["Corynebacterium", "Mycobacterium tuberculosis", "Neisseria", "Staphylococcus"],
+    correctAnswerIndex: 1,
+    explanation: "LJ medium is the selective medium for culturing Mycobacterium tuberculosis.",
+    subject: "Microbiology",
+    topic: "Culture Media"
+  },
 
   // --- PHARMACOLOGY ---
   {
@@ -273,6 +382,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "Pharmacology",
     topic: "Antimicrobials"
   },
+  {
+    id: 6004,
+    text: "Drug of choice for anaphylactic shock is:",
+    options: ["Adrenaline", "Hydrocortisone", "Avil", "Atropine"],
+    correctAnswerIndex: 0,
+    explanation: "Adrenaline (IM) is the life-saving drug of choice for anaphylaxis.",
+    subject: "Pharmacology",
+    topic: "Emergency Drugs"
+  },
+  {
+    id: 6005,
+    text: "Dry cough is a common side effect of:",
+    options: ["Beta blockers", "ACE Inhibitors", "Calcium Channel Blockers", "Diuretics"],
+    correctAnswerIndex: 1,
+    explanation: "ACE inhibitors increase bradykinin levels, leading to a dry cough.",
+    subject: "Pharmacology",
+    topic: "Cardiovascular Drugs"
+  },
 
   // --- FORENSIC MEDICINE ---
   {
@@ -292,6 +419,24 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Brush burn is a grazing abrasion caused by friction against a rough surface.",
     subject: "Forensic Medicine",
     topic: "Mechanical Injuries"
+  },
+  {
+    id: 7003,
+    text: "Pugilistic attitude is seen in:",
+    options: ["Drowning", "Burn death", "Hanging", "Strychnine poisoning"],
+    correctAnswerIndex: 1,
+    explanation: "Heat coagulation of proteins causes muscles to contract, leading to a boxer-like pose in burn victims.",
+    subject: "Forensic Medicine",
+    topic: "Thermal Injuries"
+  },
+  {
+    id: 7004,
+    text: "Typical hanging is defined as:",
+    options: ["Ligature point at occiput", "Ligature point at chin", "Feet touching ground", "Complete suspension with knot at occiput"],
+    correctAnswerIndex: 3,
+    explanation: "Typical hanging: Knot at occiput, complete suspension.",
+    subject: "Forensic Medicine",
+    topic: "Asphyxia"
   },
 
   // --- MEDICINE ---
@@ -322,6 +467,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "Medicine",
     topic: "Cardiology"
   },
+  {
+    id: 8004,
+    text: "Kayser-Fleischer rings are seen in:",
+    options: ["Hemochromatosis", "Wilson's Disease", "Primary Biliary Cirrhosis", "Hepatitis B"],
+    correctAnswerIndex: 1,
+    explanation: "Copper deposition in the cornea (Descemet's membrane) in Wilson's Disease.",
+    subject: "Medicine",
+    topic: "Hepatology"
+  },
+  {
+    id: 8005,
+    text: "The most common cause of Community Acquired Pneumonia is:",
+    options: ["Staphylococcus aureus", "Streptococcus pneumoniae", "Mycoplasma", "Klebsiella"],
+    correctAnswerIndex: 1,
+    explanation: "Streptococcus pneumoniae is the leading cause of CAP worldwide.",
+    subject: "Medicine",
+    topic: "Pulmonology"
+  },
 
   // --- SURGERY ---
   {
@@ -350,6 +513,24 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Inspiratory arrest on palpation of RUQ suggests Acute Cholecystitis.",
     subject: "General Surgery",
     topic: "Abdomen"
+  },
+  {
+    id: 9004,
+    text: "Triple assessment for breast lump includes clinical exam, imaging, and:",
+    options: ["FNAC/Biopsy", "Tumor markers", "Genetic testing", "Bone scan"],
+    correctAnswerIndex: 0,
+    explanation: "Triple assessment: Clinical exam, Imaging (Mammogram/USG), and Pathology (FNAC/Core Biopsy).",
+    subject: "General Surgery",
+    topic: "Breast"
+  },
+  {
+    id: 9005,
+    text: "Which gas is most commonly used for creating pneumoperitoneum in laparoscopic surgery?",
+    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"],
+    correctAnswerIndex: 2,
+    explanation: "CO2 is used because it is non-combustible and highly soluble in blood (reducing risk of embolism).",
+    subject: "General Surgery",
+    topic: "Laparoscopy"
   },
 
   // --- OBGYN ---
@@ -380,6 +561,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "Obstetrics & Gynecology",
     topic: "Oncology"
   },
+  {
+    id: 10004,
+    text: "Active management of the third stage of labor involves:",
+    options: ["Immediate cord clamping", "Uterine massage", "Oxytocin injection", "All of the above"],
+    correctAnswerIndex: 3,
+    explanation: "AMTSL includes oxytocin, delayed/controlled cord traction, and uterine massage to prevent PPH.",
+    subject: "Obstetrics & Gynecology",
+    topic: "Labor"
+  },
+  {
+    id: 10005,
+    text: "Strawberry cervix is seen in:",
+    options: ["Candidiasis", "Trichomoniasis", "Bacterial Vaginosis", "Chlamydia"],
+    correctAnswerIndex: 1,
+    explanation: "Punctate hemorrhages on the cervix (Strawberry cervix) are characteristic of Trichomonas vaginalis.",
+    subject: "Obstetrics & Gynecology",
+    topic: "Infections"
+  },
 
   // --- PEDIATRICS ---
   {
@@ -408,6 +607,24 @@ export const QUESTION_BANK: Question[] = [
     explanation: "TOF includes VSD, Pulmonary Stenosis, Overriding Aorta, and RV Hypertrophy. ASD is not part of the tetrad.",
     subject: "Pediatrics",
     topic: "Cardiology"
+  },
+  {
+    id: 11004,
+    text: "Delayed passage of meconium (>48 hours) suggests:",
+    options: ["Pyloric Stenosis", "Hirschsprung Disease", "Intussusception", "Necrotizing Enterocolitis"],
+    correctAnswerIndex: 1,
+    explanation: "Hirschsprung disease (congenital aganglionic megacolon) presents with delayed meconium.",
+    subject: "Pediatrics",
+    topic: "GI Disorders"
+  },
+  {
+    id: 11005,
+    text: "Which vitamin is given at birth to prevent hemorrhagic disease of the newborn?",
+    options: ["Vitamin A", "Vitamin D", "Vitamin K", "Vitamin C"],
+    correctAnswerIndex: 2,
+    explanation: "Vitamin K is administered to prevent VKDB (Vitamin K Deficiency Bleeding).",
+    subject: "Pediatrics",
+    topic: "Neonatology"
   },
 
   // --- PSM ---
@@ -438,6 +655,24 @@ export const QUESTION_BANK: Question[] = [
     subject: "PSM (Community Medicine)",
     topic: "Health Systems"
   },
+  {
+    id: 12004,
+    text: "The 'Iceberg Phenomenon' of disease is NOT shown by:",
+    options: ["Rabies", "Measles", "Rubella", "Influenza"],
+    correctAnswerIndex: 0,
+    explanation: "Rabies is clinically manifest in almost all cases (very few subclinical cases), so it does not show the iceberg phenomenon.",
+    subject: "PSM (Community Medicine)",
+    topic: "Epidemiology"
+  },
+  {
+    id: 12005,
+    text: "Biomedical waste management: Anatomical waste is disposed in which bag?",
+    options: ["Red", "Yellow", "Blue", "Black"],
+    correctAnswerIndex: 1,
+    explanation: "Human anatomical waste is disposed of in Yellow bags for incineration.",
+    subject: "PSM (Community Medicine)",
+    topic: "Waste Management"
+  },
 
   // --- OPHTHALMOLOGY ---
   {
@@ -458,6 +693,15 @@ export const QUESTION_BANK: Question[] = [
     subject: "Ophthalmology",
     topic: "Public Health"
   },
+  {
+    id: 13003,
+    text: "Safest drug for Glaucoma in bronchial asthma is:",
+    options: ["Timolol", "Betaxolol", "Latanoprost", "Pilocarpine"],
+    correctAnswerIndex: 2,
+    explanation: "Latanoprost (Prostaglandin analogue) has no respiratory side effects. Beta blockers (Timolol) are contraindicated.",
+    subject: "Ophthalmology",
+    topic: "Glaucoma"
+  },
 
   // --- ENT ---
   {
@@ -475,6 +719,15 @@ export const QUESTION_BANK: Question[] = [
     options: ["ASOM", "Glue Ear (OME)", "CSOM", "Otosclerosis"],
     correctAnswerIndex: 1,
     explanation: "Otitis Media with Effusion (Glue Ear).",
+    subject: "ENT",
+    topic: "Ear"
+  },
+  {
+    id: 14003,
+    text: "Carhart's notch is seen in:",
+    options: ["CSOM", "Otosclerosis", "Meniere's disease", "Presbycusis"],
+    correctAnswerIndex: 1,
+    explanation: "A dip in bone conduction at 2000Hz (Carhart's notch) is characteristic of Otosclerosis.",
     subject: "ENT",
     topic: "Ear"
   },
@@ -498,6 +751,15 @@ export const QUESTION_BANK: Question[] = [
     subject: "Orthopedics",
     topic: "Nerve Injuries"
   },
+  {
+    id: 15003,
+    text: "Bamboo spine is a feature of:",
+    options: ["Osteoarthritis", "Ankylosing Spondylitis", "Rheumatoid Arthritis", "Gout"],
+    correctAnswerIndex: 1,
+    explanation: "Fusion of vertebrae (syndesmophytes) leads to Bamboo spine in Ankylosing Spondylitis.",
+    subject: "Orthopedics",
+    topic: "Spine"
+  },
 
   // --- DERMATOLOGY ---
   {
@@ -517,6 +779,15 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Tzanck smear shows acantholytic cells in Pemphigus and multinucleated giant cells in Herpes.",
     subject: "Dermatology",
     topic: "Vesiculobullous"
+  },
+  {
+    id: 16003,
+    text: "Burrow is the pathognomonic lesion of:",
+    options: ["Scabies", "Pediculosis", "Tinea", "Impetigo"],
+    correctAnswerIndex: 0,
+    explanation: "Sarcoptes scabiei creates burrows in the skin.",
+    subject: "Dermatology",
+    topic: "Infections"
   },
 
   // --- PSYCHIATRY ---
@@ -538,6 +809,15 @@ export const QUESTION_BANK: Question[] = [
     subject: "Psychiatry",
     topic: "Substance Abuse"
   },
+  {
+    id: 17003,
+    text: "Drug of choice for Bipolar Disorder prophylaxis is:",
+    options: ["Lithium", "Haloperidol", "Fluoxetine", "Diazepam"],
+    correctAnswerIndex: 0,
+    explanation: "Lithium is the mood stabilizer of choice for Bipolar prophylaxis.",
+    subject: "Psychiatry",
+    topic: "Mood Disorders"
+  },
 
   // --- RADIOLOGY ---
   {
@@ -558,6 +838,15 @@ export const QUESTION_BANK: Question[] = [
     subject: "Radiology",
     topic: "Obs Gyn Radiology"
   },
+  {
+    id: 18003,
+    text: "Target sign on Ultrasound is seen in:",
+    options: ["Appendicitis", "Intussusception", "Cholecystitis", "Pyloric Stenosis"],
+    correctAnswerIndex: 1,
+    explanation: "Intussusception appears as a 'Target' or 'Doughnut' sign on transverse scan.",
+    subject: "Radiology",
+    topic: "Pediatric Radiology"
+  },
 
   // --- ANESTHESIA ---
   {
@@ -577,6 +866,15 @@ export const QUESTION_BANK: Question[] = [
     explanation: "Succinylcholine and Halothane are classic triggers.",
     subject: "Anesthesia",
     topic: "Complications"
+  },
+  {
+    id: 19003,
+    text: "The color coding for Oxygen cylinder is:",
+    options: ["Black body with white shoulder", "Blue", "Grey", "Black"],
+    correctAnswerIndex: 0,
+    explanation: "Oxygen cylinders have a black body with a white shoulder.",
+    subject: "Anesthesia",
+    topic: "Equipment"
   }
 ];
 

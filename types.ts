@@ -28,6 +28,8 @@ export interface QuizResult {
   scorePercentage: number;
   subjectBreakdown: Record<string, { total: number; correct: number }>;
   timestamp: string;
+  questions?: Question[];
+  userAnswers?: Record<number, number>;
 }
 
 export interface SyllabusSubject {

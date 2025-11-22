@@ -52,6 +52,11 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   const handleAnswerSelect = (optionIndex: number) => {
     if (quizSubmitted) return;
     setSelectedAnswers(prev => ({ ...prev, [currentQuestionIndex]: optionIndex }));
+
+    // Immediate feedback for Diagnostic mode
+    if (mode === QuizMode.DIAGNOSTIC) {
+      setShowExplanation(true);
+    }
   };
 
   const handleNext = () => {
@@ -93,7 +98,9 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
       correctAnswers: correctCount,
       scorePercentage: Math.round((correctCount / questions.length) * 100),
       subjectBreakdown: breakdown,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      questions: questions,
+      userAnswers: selectedAnswers
     };
 
     onComplete(result);
@@ -103,12 +110,12 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   if (stage === 'SETUP') {
     return (
       <div className="max-w-5xl mx-auto p-4 md:p-6 animate-fade-in">
-        <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold text-white mb-2">Daily Practice Zone</h2>
+        <div className="mb-6 md:mb-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Daily Practice Zone</h2>
             <p className="text-slate-400">Customize your practice session.</p>
         </div>
 
-        <div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-8 mb-8">
+        <div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-8 mb-8">
             <h3 className="font-semibold text-slate-300 mb-4 flex items-center gap-2">
                 <Layers size={20} className="text-teal-400" />
                 Select Subject
@@ -140,12 +147,12 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
             </div>
 
             <h3 className="font-semibold text-slate-300 mb-4">Number of Questions</h3>
-            <div className="flex gap-4 mb-8">
+            <div className="grid grid-cols-4 gap-3 mb-8 md:w-max">
                 {[10, 25, 50, 100].map(count => (
                     <button
                         key={count}
                         onClick={() => setQuestionCount(count)}
-                        className={`px-6 py-2 rounded-lg font-semibold transition-all border ${
+                        className={`px-4 py-2 rounded-lg font-semibold transition-all border text-center ${
                             questionCount === count 
                             ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' 
                             : 'bg-slate-800 text-slate-500 border-slate-700 hover:bg-slate-700'
@@ -156,16 +163,16 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                 ))}
             </div>
 
-            <div className="flex justify-end gap-4 pt-6 border-t border-slate-800">
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-slate-800">
                 <button 
                     onClick={onCancel}
-                    className="px-6 py-3 text-slate-400 font-medium hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+                    className="px-6 py-3 text-slate-400 font-medium hover:text-white hover:bg-slate-800 rounded-xl transition-colors w-full sm:w-auto"
                 >
                     Cancel
                 </button>
                 <button 
                     onClick={startDailyQuiz}
-                    className="px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/20 transform active:scale-95 transition-all flex items-center gap-2"
+                    className="px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/20 transform active:scale-95 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
                 >
                     <Play size={20} fill="currentColor" />
                     Start Quiz
@@ -207,17 +214,17 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-start mb-6 gap-4">
         <div>
-          <h2 className="text-lg font-bold text-teal-400 uppercase tracking-widest">{mode === QuizMode.DIAGNOSTIC ? 'Integrated Diagnostic' : `${selectedSubject} Practice`}</h2>
-          <p className="text-sm text-slate-500 mt-1">Question {currentQuestionIndex + 1} <span className="text-slate-700 mx-1">/</span> {questions.length}</p>
+          <h2 className="text-sm md:text-lg font-bold text-teal-400 uppercase tracking-widest">{mode === QuizMode.DIAGNOSTIC ? 'Integrated Diagnostic' : `${selectedSubject} Practice`}</h2>
+          <p className="text-xs md:text-sm text-slate-500 mt-1">Question {currentQuestionIndex + 1} <span className="text-slate-700 mx-1">/</span> {questions.length}</p>
         </div>
-        <div className="flex flex-col items-end">
-           <div className="text-xs font-semibold px-3 py-1 bg-slate-800 text-blue-400 rounded-full border border-slate-700 mb-1">
+        <div className="flex flex-col items-end shrink-0">
+           <div className="text-[10px] md:text-xs font-semibold px-3 py-1 bg-slate-800 text-blue-400 rounded-full border border-slate-700 mb-1 whitespace-nowrap">
              {currentQ.subject}
            </div>
            {currentQ.topic && (
-               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+               <div className="text-[8px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider text-right">
                    {currentQ.topic}
                </div>
            )}
@@ -234,14 +241,14 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
 
       {/* Question Card */}
       <div className="bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 overflow-hidden">
-        <div className="p-6 md:p-10">
-          <p className="text-xl md:text-2xl font-medium text-slate-100 leading-relaxed mb-8">
+        <div className="p-5 md:p-10">
+          <p className="text-lg md:text-2xl font-medium text-slate-100 leading-relaxed mb-8">
             {currentQ.text}
           </p>
 
           <div className="space-y-3">
             {currentQ.options.map((option, idx) => {
-              let btnClass = "w-full text-left p-5 rounded-xl border transition-all duration-200 flex items-center justify-between group ";
+              let btnClass = "w-full text-left p-4 md:p-5 rounded-xl border transition-all duration-200 flex items-center justify-between group ";
               
               if (showExplanation) {
                 if (idx === currentQ.correctAnswerIndex) {
@@ -266,9 +273,9 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                   disabled={showExplanation}
                   className={btnClass}
                 >
-                  <span className="font-medium text-lg">{option}</span>
-                  {showExplanation && idx === currentQ.correctAnswerIndex && <CheckCircle size={24} className="text-green-500" />}
-                  {showExplanation && isSelected(idx) && idx !== currentQ.correctAnswerIndex && <XCircle size={24} className="text-red-500" />}
+                  <span className="font-medium text-base md:text-lg">{option}</span>
+                  {showExplanation && idx === currentQ.correctAnswerIndex && <CheckCircle size={20} className="text-green-500 shrink-0 ml-2" />}
+                  {showExplanation && isSelected(idx) && idx !== currentQ.correctAnswerIndex && <XCircle size={20} className="text-red-500 shrink-0 ml-2" />}
                 </button>
               );
             })}
@@ -277,33 +284,34 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
 
         {/* Explanation Area */}
         {showExplanation && (
-          <div className="bg-slate-800/80 p-6 md:p-8 border-t border-slate-700 animate-fade-in backdrop-blur-sm">
+          <div className="bg-slate-800/80 p-5 md:p-8 border-t border-slate-700 animate-fade-in backdrop-blur-sm">
             <div className="flex items-start gap-4">
               <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400 shrink-0">
                  <BookOpen size={24} />
               </div>
               <div>
                 <h4 className="font-bold text-blue-300 mb-2 text-lg">Explanation</h4>
-                <p className="text-slate-300 leading-relaxed">{currentQ.explanation}</p>
+                <p className="text-slate-300 leading-relaxed text-sm md:text-base">{currentQ.explanation}</p>
               </div>
             </div>
           </div>
         )}
 
         {/* Footer Controls */}
-        <div className="bg-slate-950 p-6 flex justify-between items-center border-t border-slate-800">
+        <div className="bg-slate-950 p-4 md:p-6 flex flex-col-reverse sm:flex-row justify-between items-center border-t border-slate-800 gap-4">
           <button 
              onClick={onCancel}
-             className="text-slate-500 font-medium hover:text-slate-300 transition-colors"
+             className="text-slate-500 font-medium hover:text-slate-300 transition-colors w-full sm:w-auto py-2"
           >
             Quit Session
           </button>
           
-          <div className="flex gap-4">
-            {!showExplanation && isAnswered && (
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            {/* Hide Check Answer in Diagnostic Mode to enforce exam conditions */}
+            {mode !== QuizMode.DIAGNOSTIC && !showExplanation && isAnswered && (
               <button 
                 onClick={() => setShowExplanation(true)}
-                className="px-6 py-2.5 bg-transparent border border-slate-600 text-slate-300 rounded-xl font-medium hover:bg-slate-800 hover:border-slate-500 transition-all"
+                className="px-6 py-2.5 bg-transparent border border-slate-600 text-slate-300 rounded-xl font-medium hover:bg-slate-800 hover:border-slate-500 transition-all w-full sm:w-auto text-center"
               >
                 Check Answer
               </button>
@@ -312,7 +320,7 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
             <button 
               onClick={handleNext}
               disabled={!isAnswered && !showExplanation}
-              className={`px-8 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all ${
+              className={`px-8 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all w-full sm:w-auto ${
                 (!isAnswered && !showExplanation)
                   ? 'bg-slate-800 text-slate-600 cursor-not-allowed border border-slate-800' 
                   : 'bg-teal-600 text-white hover:bg-teal-500 hover:shadow-teal-500/25'

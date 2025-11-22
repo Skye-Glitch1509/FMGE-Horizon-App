@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, BookOpen, Calendar, PlayCircle, Sparkles, ChevronRight } from 'lucide-react';
+import { Activity, BookOpen, Calendar, PlayCircle, Sparkles } from 'lucide-react';
 import { View, QuizMode } from '../types';
 
 interface DashboardProps {
@@ -13,20 +13,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ onChangeView, lastScore, w
     <div className="flex flex-col items-center justify-center min-h-[80vh] animate-fade-in p-4 md:p-0">
       
       {/* Hero Section */}
-      <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20 space-y-6">
+      <div className="text-center max-w-3xl mx-auto mb-10 md:mb-20 space-y-6">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-teal-400 text-xs font-bold tracking-widest uppercase shadow-xl shadow-black/20 backdrop-blur-md">
           <Sparkles size={12} />
           All-in-One FMGE Solution
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
           Welcome to <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500">
             FMGE Horizon
           </span>
         </h1>
         
-        <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+        <p className="text-base md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed px-4">
           Your comprehensive platform to plan, track, and conquer the FMGE exam. 
           Built by medical students, for medical students.
         </p>
@@ -95,15 +95,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onChangeView, lastScore, w
       </div>
 
       {/* Status Footer */}
-      <div className="mt-16 flex gap-6 text-sm text-slate-500">
+      <div className="mt-12 md:mt-16 flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-slate-500 px-4">
         {lastScore !== undefined && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full">
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full shadow-md">
                 <div className={`w-2 h-2 rounded-full ${lastScore >= 50 ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'}`}></div>
                 <span>Last Score: <span className="text-slate-200 font-mono">{lastScore}%</span></span>
             </div>
         )}
         {weakAreas.length > 0 && (
-             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full">
+             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full shadow-md">
                 <div className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"></div>
                 <span>Focus: <span className="text-slate-200">{weakAreas[0]}</span></span>
             </div>
