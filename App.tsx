@@ -38,7 +38,8 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-950 flex text-slate-100 font-sans selection:bg-teal-500/30 selection:text-teal-200">
       <Sidebar 
         currentView={currentView} 
-        onChangeView={(v) => handleNavigate(v, v === View.QUIZ ? QuizMode.DAILY : undefined)} 
+        currentMode={quizMode}
+        onChangeView={handleNavigate} 
         isMobileOpen={isMobileMenuOpen}
         closeMobile={() => setIsMobileMenuOpen(false)}
       />

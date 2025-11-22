@@ -1,20 +1,48 @@
 import React from 'react';
-import { LayoutDashboard, BookOpen, CalendarDays, GraduationCap, Activity } from 'lucide-react';
-import { View } from '../types';
+import { LayoutDashboard, BookOpen, CalendarDays, Activity, PlayCircle } from 'lucide-react';
+import { View, QuizMode } from '../types';
 
 interface SidebarProps {
   currentView: View;
-  onChangeView: (view: View) => void;
+  currentMode: QuizMode;
+  onChangeView: (view: View, mode?: QuizMode) => void;
   isMobileOpen: boolean;
   closeMobile: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isMobileOpen, closeMobile }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ currentView, currentMode, onChangeView, isMobileOpen, closeMobile }) => {
+  
   const navItems = [
-    { id: View.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
-    { id: View.SYLLABUS, label: 'Syllabus', icon: BookOpen },
-    { id: View.PLANNER, label: 'Study Planner', icon: CalendarDays },
-    { id: View.QUIZ, label: 'Practice Zone', icon: GraduationCap }, 
+    { 
+      id: View.DASHBOARD, 
+      label: 'Dashboard', 
+      icon: LayoutDashboard,
+      mode: undefined 
+    },
+    { 
+      id: View.SYLLABUS, 
+      label: 'Syllabus', 
+      icon: BookOpen,
+      mode: undefined 
+    },
+    { 
+      id: View.PLANNER, 
+      label: 'Study Planner', 
+      icon: CalendarDays,
+      mode: undefined 
+    },
+    { 
+      id: View.QUIZ, 
+      label: 'Diagnostic Test', 
+      icon: Activity,
+      mode: QuizMode.DIAGNOSTIC 
+    }, 
+    { 
+      id: View.QUIZ, 
+      label: 'Daily Quiz', 
+      icon: PlayCircle,
+      mode: QuizMode.DAILY 
+    }, 
   ];
 
   return (
@@ -46,14 +74,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isM
         <nav className="p-4 space-y-2 mt-4">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = currentView === item.id || (item.id === View.QUIZ && (currentView === View.RESULTS || currentView === View.QUIZ));
+            
+            // Logic to determine if tab is active
+            let isActive = false;
+
+            if (item.id === View.QUIZ) {
+              // For Quiz items, check if View is QUIZ (or RESULTS) AND the mode matches
+              const isQuizView = currentView === View.QUIZ || currentView === View.RESULTS;
+              isActive = isQuizView && currentMode === item.mode;
+            } else {
+              // For non-quiz items, simple view check
+              isActive = currentView === item.id;
+            }
             
             return (
               <button
-                key={item.id}
+                key={`${item.id}-${item.mode}`}
                 onClick={() => {
-                   if (item.id === View.QUIZ) onChangeView(View.QUIZ);
-                   else onChangeView(item.id);
+                   onChangeView(item.id, item.mode);
                    closeMobile();
                 }}
                 className={`
@@ -70,23 +108,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isM
             );
           })}
         </nav>
-
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700 backdrop-blur-sm">
-            <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
-                    <Activity size={16} />
-                </div>
-                <div>
-                    <p className="text-slate-200 text-sm font-medium">Pro Status</p>
-                    <p className="text-slate-500 text-xs">Active</p>
-                </div>
-            </div>
-            <div className="w-full bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden">
-                <div className="bg-gradient-to-r from-teal-400 to-blue-500 w-3/4 h-full rounded-full"></div>
-            </div>
-          </div>
-        </div>
       </aside>
     </>
   );

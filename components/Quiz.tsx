@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, ArrowRight, BookOpen, BrainCircuit, Play, Layers, Sparkles, Key, Trash2, Wand2, Edit2, ExternalLink, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowRight, BookOpen, BrainCircuit, Play, Layers, Sparkles, Key, Trash2, Wand2, Edit2, ExternalLink, AlertCircle, Loader2, BarChart3 } from 'lucide-react';
 import { Question, QuizMode, QuizResult } from '../types';
 import { getQuestionsForSubject, getDiagnosticQuestions, SYLLABUS_DATA } from '../services/mockData';
 import { generateQuestionsWithAI, validateApiKey } from '../services/geminiService';
@@ -12,6 +12,7 @@ interface QuizProps {
 
 type QuizStage = 'SETUP' | 'ACTIVE' | 'FINISHED';
 type SourceType = 'BANK' | 'AI';
+type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
 export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   // Stage management
@@ -20,6 +21,7 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   // Setup State
   const [selectedSubject, setSelectedSubject] = useState<string>('Mixed');
   const [questionCount, setQuestionCount] = useState<number>(10);
+  const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
   const [sourceType, setSourceType] = useState<SourceType>('BANK');
   const [customTopic, setCustomTopic] = useState('');
   
@@ -40,15 +42,25 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Initial Load for Diagnostic & API Key Check
+  // Initial Load for Diagnostic & Reset State on Mode Change
   useEffect(() => {
+    // Reset all quiz state when mode changes (Fixes navigation bug)
+    setQuestions([]);
+    setQuizSubmitted(false);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswers({});
+    setShowExplanation(false);
+    setError(null);
+
     if (mode === QuizMode.DIAGNOSTIC) {
+      setStage('ACTIVE');
       setLoading(true);
       setTimeout(() => {
         setQuestions(getDiagnosticQuestions());
         setLoading(false);
       }, 600);
     } else {
+        setStage('SETUP');
         // Load API Key
         const savedKey = localStorage.getItem('fmge_gemini_key');
         if (savedKey) {
@@ -130,7 +142,8 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                 apiKey, 
                 questionCount, 
                 "Integrated Clinical Sciences", // Base context
-                customTopic
+                customTopic,
+                difficulty
             );
             
             if (aiQuestions.length === 0) throw new Error("AI returned no questions. Please try a different topic.");
@@ -443,21 +456,56 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
                 </>
             )}
 
-            <h3 className="font-semibold text-slate-300 mb-4">Number of Questions</h3>
-            <div className="grid grid-cols-4 gap-3 mb-8 md:w-max">
-                {[10, 25, 50, 100].map(count => (
-                    <button
-                        key={count}
-                        onClick={() => setQuestionCount(count)}
-                        className={`px-4 py-2 rounded-lg font-semibold transition-all border text-center ${
-                            questionCount === count 
-                            ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' 
-                            : 'bg-slate-800 text-slate-500 border-slate-700 hover:bg-slate-700'
-                        }`}
-                    >
-                        {count}
-                    </button>
-                ))}
+            {/* Settings Grid: Count & Difficulty */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 className="font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                        <Layers size={20} className="text-teal-400" />
+                        Number of Questions
+                    </h3>
+                    <div className="grid grid-cols-4 gap-3">
+                        {[10, 25, 50, 100].map(count => (
+                            <button
+                                key={count}
+                                onClick={() => setQuestionCount(count)}
+                                className={`px-4 py-2 rounded-lg font-semibold transition-all border text-center ${
+                                    questionCount === count 
+                                    ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' 
+                                    : 'bg-slate-800 text-slate-500 border-slate-700 hover:bg-slate-700'
+                                }`}
+                            >
+                                {count}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                        <BarChart3 size={20} className="text-teal-400" />
+                        Difficulty Level
+                    </h3>
+                    <div className="grid grid-cols-3 gap-3">
+                        {(['Easy', 'Medium', 'Hard'] as Difficulty[]).map(level => (
+                            <button
+                                key={level}
+                                onClick={() => setDifficulty(level)}
+                                className={`px-4 py-2 rounded-lg font-semibold transition-all border text-center ${
+                                    difficulty === level
+                                    ? (level === 'Easy' ? 'bg-green-500/20 text-green-400 border-green-500/50' : 
+                                       level === 'Medium' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50' : 
+                                       'bg-red-500/20 text-red-400 border-red-500/50')
+                                    : 'bg-slate-800 text-slate-500 border-slate-700 hover:bg-slate-700'
+                                }`}
+                            >
+                                {level}
+                            </button>
+                        ))}
+                    </div>
+                    {sourceType === 'BANK' && (
+                        <p className="text-[10px] text-slate-600 mt-2">*Difficulty filter applies primarily to AI generated questions. Bank questions are mixed.</p>
+                    )}
+                </div>
             </div>
 
             <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-slate-800">
@@ -504,7 +552,7 @@ export const Quiz: React.FC<QuizProps> = ({ mode, onComplete, onCancel }) => {
         <div className="w-16 h-16 border-4 border-slate-800 border-t-teal-500 rounded-full animate-spin mb-6"></div>
         <h2 className="text-2xl font-semibold text-white">{loadingMessage}</h2>
         <p className="text-slate-400 mt-2">
-            {sourceType === 'AI' ? `Generating questions for ${customTopic}...` : 'Accessing Question Bank...'}
+            {sourceType === 'AI' ? `Generating ${difficulty} questions for ${customTopic}...` : 'Accessing Question Bank...'}
         </p>
       </div>
     );

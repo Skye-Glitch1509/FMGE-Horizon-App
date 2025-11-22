@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PlanDay, PlanTask } from '../types';
-import { Calendar, CheckCircle2, Plus, Trash2, Circle, X, Undo2 } from 'lucide-react';
+import { Calendar, CheckCircle2, Plus, Trash2, Circle, X, Undo2, ChevronDown } from 'lucide-react';
+import { SYLLABUS_DATA } from '../services/mockData';
 
 interface PlannerProps {
   weakSubjects: string[];
@@ -23,7 +24,12 @@ export const Planner: React.FC<PlannerProps> = ({ weakSubjects }) => {
     if (savedPlan) {
       try {
         const parsed = JSON.parse(savedPlan);
-        setPlan(parsed);
+        // Validate that the parsed data is actually an array before using it
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPlan(parsed);
+        } else {
+          initializeDefaultPlan();
+        }
       } catch (e) {
         console.error("Failed to parse saved plan", e);
         initializeDefaultPlan();
@@ -32,6 +38,7 @@ export const Planner: React.FC<PlannerProps> = ({ weakSubjects }) => {
       initializeDefaultPlan();
     }
     setIsLoaded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save to localStorage whenever plan changes, but only after initial load
@@ -233,16 +240,37 @@ export const Planner: React.FC<PlannerProps> = ({ weakSubjects }) => {
                     placeholder="Day Title"
                  />
                  
-                 {/* Editable Focus */}
-                 <div className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-700 w-full md:w-auto">
+                 {/* Editable Focus Dropdown */}
+                 <div className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg text-sm border border-slate-700 w-full md:w-auto relative">
                     <span className="text-slate-400 shrink-0">Focus:</span>
-                    <input 
-                      className="bg-transparent border-b border-transparent hover:border-slate-600 focus:border-blue-500 focus:outline-none w-full md:w-32 text-blue-300 font-medium placeholder-slate-600"
-                      value={day.focus}
-                      onChange={(e) => updateDayFocus(day.id, e.target.value)}
-                      onFocus={() => saveToHistory()}
-                      placeholder="Set Focus"
-                    />
+                    <div className="relative flex-1 md:w-48">
+                         <select 
+                           className="bg-transparent appearance-none border-none focus:ring-0 w-full text-blue-300 font-medium cursor-pointer pr-6 focus:outline-none"
+                           value={day.focus}
+                           onChange={(e) => {
+                               saveToHistory();
+                               updateDayFocus(day.id, e.target.value);
+                           }}
+                         >
+                            <option value="General" className="bg-slate-900 text-slate-300">General</option>
+                            {SYLLABUS_DATA.map(subj => {
+                                const isWeak = weakSubjects.includes(subj.name);
+                                return (
+                                    <option key={subj.name} value={subj.name} className="bg-slate-900 text-slate-300">
+                                        {subj.name} {isWeak ? '🔴' : ''}
+                                    </option>
+                                );
+                            })}
+                         </select>
+                         {/* Custom Arrow */}
+                         <ChevronDown size={14} className="absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                    </div>
+                    {/* External warning indicator if selected */}
+                    {weakSubjects.includes(day.focus) && (
+                        <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] px-1.5 rounded-full shadow-lg animate-pulse" title="This is a weak area">
+                            !
+                        </div>
+                    )}
                  </div>
               </div>
               <button onClick={() => deleteDay(day.id)} className="self-end md:self-auto text-slate-500 hover:text-red-400 transition-colors p-2 hover:bg-slate-800 rounded-lg" title="Delete Day">

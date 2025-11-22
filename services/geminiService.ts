@@ -46,7 +46,8 @@ export const generateQuestionsWithAI = async (
   apiKey: string, 
   count: number, 
   subject: string, 
-  specificTopic?: string
+  specificTopic?: string,
+  difficulty: string = "Medium"
 ): Promise<Question[]> => {
   
   // Client-side check before attempting request
@@ -74,6 +75,11 @@ export const generateQuestionsWithAI = async (
     - You ALWAYS write clinical vignettes (patient scenarios).
     - You prioritize "Applied Basic Sciences" (Anatomy/Physiology applied to clinical cases).
     - Your distractors (wrong options) are tricky and plausible.
+
+    DIFFICULTY LEVEL: ${difficulty.toUpperCase()}
+    ${difficulty === 'Hard' ? '- Focus on rare presentations, complex management steps, or multi-step reasoning.' : ''}
+    ${difficulty === 'Medium' ? '- Focus on standard clinical presentations and first-line management/diagnosis.' : ''}
+    ${difficulty === 'Easy' ? '- Focus on classic triads, direct clinical associations, and gold-standard tests.' : ''}
 
     STRICT GUIDELINES:
     1. **VIGNETTE MANDATORY**: Every single question must start with a patient scenario. 
