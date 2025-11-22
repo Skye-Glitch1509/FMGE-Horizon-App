@@ -1,6 +1,9 @@
 
 import { Question, SyllabusSubject } from '../types';
 
+// ---------------------------------------------------------------------------
+// SYLLABUS DATA
+// ---------------------------------------------------------------------------
 export const SYLLABUS_DATA: SyllabusSubject[] = [
   {
     name: "Anatomy",
@@ -99,817 +102,265 @@ export const SYLLABUS_DATA: SyllabusSubject[] = [
   }
 ];
 
-// Expanded Question Bank with Seed Questions for all 19 Subjects
-export const QUESTION_BANK: Question[] = [
-  // --- ANATOMY ---
-  {
-    id: 1001,
-    text: "A patient sustained a fracture of the shaft of the humerus. On examination, he has wrist drop. Which nerve is most likely injured?",
-    options: ["Median nerve", "Ulnar nerve", "Radial nerve", "Axillary nerve"],
-    correctAnswerIndex: 2,
-    explanation: "Radial nerve runs in the spiral groove; injury causes wrist drop.",
-    subject: "Anatomy",
-    topic: "Upper Limb Nerves"
-  },
-  {
-    id: 1002,
-    text: "The Great Saphenous vein drains into which vein?",
-    options: ["Femoral vein", "Popliteal vein", "External Iliac vein", "Internal Iliac vein"],
-    correctAnswerIndex: 0,
-    explanation: "The Great Saphenous vein drains into the Femoral vein at the saphenofemoral junction.",
-    subject: "Anatomy",
-    topic: "Lower Limb Vessels"
-  },
-  {
-    id: 1003,
-    text: "Which structure passes through the Foramen Ovale?",
-    options: ["Maxillary Nerve", "Mandibular Nerve", "Middle Meningeal Artery", "Optic Nerve"],
-    correctAnswerIndex: 1,
-    explanation: "The Mandibular Nerve (V3) passes through the Foramen Ovale.",
-    subject: "Anatomy",
-    topic: "Skull Foramina"
-  },
-  {
-    id: 1004,
-    text: "Erb's Palsy involves injury to which nerve roots?",
-    options: ["C5, C6", "C8, T1", "C7", "T1, T2"],
-    correctAnswerIndex: 0,
-    explanation: "Erb's palsy is caused by injury to the upper trunk of the brachial plexus (C5, C6), leading to 'waiter's tip' deformity.",
-    subject: "Anatomy",
-    topic: "Brachial Plexus"
-  },
-  {
-    id: 1005,
-    text: "Which part of the duodenum is crossed anteriorly by the superior mesenteric vessels?",
-    options: ["First part", "Second part", "Third part", "Fourth part"],
-    correctAnswerIndex: 2,
-    explanation: "The third part (horizontal) of the duodenum is crossed anteriorly by the SMA and SMV.",
-    subject: "Anatomy",
-    topic: "Abdomen"
-  },
-  {
-    id: 1006,
-    text: "Winged scapula is caused by injury to:",
-    options: ["Long thoracic nerve", "Dorsal scapular nerve", "Axillary nerve", "Suprascapular nerve"],
-    correctAnswerIndex: 0,
-    explanation: "Injury to the Long Thoracic Nerve results in paralysis of the Serratus Anterior, causing winged scapula.",
-    subject: "Anatomy",
-    topic: "Upper Limb Nerves"
-  },
+// ---------------------------------------------------------------------------
+// QUESTION GENERATOR ENGINE
+// ---------------------------------------------------------------------------
 
-  // --- PHYSIOLOGY ---
-  {
-    id: 2001,
-    text: "Brown-Sequard syndrome involves:",
-    options: ["Complete transection of spinal cord", "Hemisection of spinal cord", "Anterior cord syndrome", "Central cord syndrome"],
-    correctAnswerIndex: 1,
-    explanation: "Brown-Sequard is hemisection: ipsilateral motor/proprioception loss, contralateral pain/temp loss.",
-    subject: "Physiology",
-    topic: "CNS Physiology"
-  },
-  {
-    id: 2002,
-    text: "Which phase of the cardiac cycle has the highest ventricular volume?",
-    options: ["Isovolumetric contraction", "Isovolumetric relaxation", "End of diastole", "End of systole"],
-    correctAnswerIndex: 2,
-    explanation: "Ventricular volume is highest at the end of diastole (End Diastolic Volume).",
-    subject: "Physiology",
-    topic: "Cardiac Cycle"
-  },
-  {
-    id: 2003,
-    text: "Surfactant is produced by:",
-    options: ["Type I Pneumocytes", "Type II Pneumocytes", "Clara cells", "Macrophages"],
-    correctAnswerIndex: 1,
-    explanation: "Type II Pneumocytes produce surfactant (dipalmitoyl phosphatidylcholine) to reduce surface tension.",
-    subject: "Physiology",
-    topic: "Respiratory Physiology"
-  },
-  {
-    id: 2004,
-    text: "Which hormone is primarily responsible for the LH surge?",
-    options: ["Progesterone", "Estrogen", "Inhibin", "FSH"],
-    correctAnswerIndex: 1,
-    explanation: "High levels of Estrogen exert positive feedback on the pituitary, triggering the LH surge and ovulation.",
-    subject: "Physiology",
-    topic: "Endocrinology"
-  },
-  {
-    id: 2005,
-    text: "The primary pacemaker of the heart is:",
-    options: ["AV Node", "Bundle of His", "SA Node", "Purkinje Fibers"],
-    correctAnswerIndex: 2,
-    explanation: "The SA Node has the highest rate of automaticity, making it the primary pacemaker.",
-    subject: "Physiology",
-    topic: "Cardiovascular"
-  },
-  {
-    id: 2006,
-    text: "Renin is secreted by:",
-    options: ["Macula Densa", "Juxtaglomerular cells", "Mesangial cells", "Podocytes"],
-    correctAnswerIndex: 1,
-    explanation: "Juxtaglomerular (JG) cells in the afferent arteriole secrete Renin in response to low BP.",
-    subject: "Physiology",
-    topic: "Renal"
-  },
+interface QuestionTemplate {
+  topic: string;
+  q: string; // Question Text
+  a: string; // Correct Answer
+  d: string[]; // Distractors (Wrong answers)
+  e: string; // Explanation
+}
 
-  // --- BIOCHEMISTRY ---
-  {
-    id: 3001,
-    text: "Which vitamin deficiency causes the '3 Ds' - Dermatitis, Diarrhea, and Dementia?",
-    options: ["Thiamine (B1)", "Riboflavin (B2)", "Niacin (B3)", "Pyridoxine (B6)"],
-    correctAnswerIndex: 2,
-    explanation: "Pellagra is caused by Niacin (B3) deficiency.",
-    subject: "Biochemistry",
-    topic: "Vitamin Deficiencies"
-  },
-  {
-    id: 3002,
-    text: "The rate limiting enzyme of Glycolysis is:",
-    options: ["Hexokinase", "Phosphofructokinase-1 (PFK-1)", "Pyruvate Kinase", "Glucokinase"],
-    correctAnswerIndex: 1,
-    explanation: "PFK-1 is the major rate-limiting enzyme of glycolysis.",
-    subject: "Biochemistry",
-    topic: "Glycolysis"
-  },
-  {
-    id: 3003,
-    text: "Maple Syrup Urine Disease is due to a defect in the metabolism of:",
-    options: ["Phenylalanine", "Tyrosine", "Branched Chain Amino Acids", "Sulfur containing Amino Acids"],
-    correctAnswerIndex: 2,
-    explanation: "Defect in branched-chain alpha-ketoacid dehydrogenase affecting Leucine, Isoleucine, and Valine.",
-    subject: "Biochemistry",
-    topic: "Amino Acid Metabolism"
-  },
-  {
-    id: 3004,
-    text: "Which is the most common enzyme defect in Urea Cycle Disorders?",
-    options: ["Ornithine Transcarbamylase (OTC)", "Carbamoyl Phosphate Synthetase I", "Arginase", "Argininosuccinate Lyase"],
-    correctAnswerIndex: 0,
-    explanation: "OTC deficiency is the most common urea cycle disorder and is X-linked.",
-    subject: "Biochemistry",
-    topic: "Urea Cycle"
-  },
-  {
-    id: 3005,
-    text: "Ketone bodies are synthesized in:",
-    options: ["Liver Mitochondria", "Liver Cytosol", "Kidney", "Muscle"],
-    correctAnswerIndex: 0,
-    explanation: "Ketogenesis occurs in the mitochondria of liver cells.",
-    subject: "Biochemistry",
-    topic: "Lipid Metabolism"
-  },
+const SUBJECT_CONTENT: Record<string, QuestionTemplate[]> = {
+  "Anatomy": [
+    { topic: "Upper Limb", q: "Which nerve is injured in a fracture of the surgical neck of the humerus?", a: "Axillary nerve", d: ["Radial nerve", "Ulnar nerve", "Median nerve"], e: "The Axillary nerve wraps around the surgical neck of the humerus." },
+    { topic: "Upper Limb", q: "Wrist drop is caused by injury to which nerve?", a: "Radial nerve", d: ["Median nerve", "Ulnar nerve", "Axillary nerve"], e: "Radial nerve injury, often at the spiral groove, leads to paralysis of wrist extensors." },
+    { topic: "Lower Limb", q: "The Great Saphenous vein drains into which vein?", a: "Femoral vein", d: ["Popliteal vein", "External Iliac vein", "Internal Iliac vein"], e: "Drains into the Femoral vein at the saphenofemoral junction." },
+    { topic: "Thorax", q: "Which structure passes through the aortic hiatus of the diaphragm?", a: "Thoracic Duct", d: ["Vagus nerve", "Phrenic nerve", "Esophagus"], e: "Aortic hiatus transmits the Aorta, Thoracic Duct, and Azygos vein." },
+    { topic: "Neuroanatomy", q: "Broca's area is located in which lobe?", a: "Frontal Lobe", d: ["Temporal Lobe", "Parietal Lobe", "Occipital Lobe"], e: "Broca's area (motor speech) is in the inferior frontal gyrus." },
+    { topic: "Head & Neck", q: "Which muscle causes opening of the mouth?", a: "Lateral Pterygoid", d: ["Medial Pterygoid", "Masseter", "Temporalis"], e: "Lateral Pterygoid is the only muscle of mastication that depresses the mandible (opens mouth)." },
+    { topic: "Abdomen", q: "Which part of the duodenum is crossed by the Superior Mesenteric Artery?", a: "Third part", d: ["First part", "Second part", "Fourth part"], e: "The 3rd (horizontal) part is compressed between the Aorta and SMA." },
+    { topic: "General", q: "Which type of joint is the Hip joint?", a: "Ball and Socket", d: ["Hinge", "Pivot", "Saddle"], e: "Hip is a synovial ball and socket joint." },
+    { topic: "Upper Limb", q: "Claw hand is a feature of injury to:", a: "Ulnar nerve", d: ["Radial nerve", "Median nerve", "Axillary nerve"], e: "Ulnar nerve injury causes paralysis of interossei and lumbricals 3,4." },
+    { topic: "Thorax", q: "The SA node is located in:", a: "Right Atrium", d: ["Left Atrium", "Interatrial septum", "Right Ventricle"], e: "Located at the junction of SVC and Right Atrium." },
+    { topic: "Head & Neck", q: "Corneal reflex afferent limb is mediated by:", a: "Nasociliary nerve (V1)", d: ["Facial nerve", "Optic nerve", "Maxillary nerve"], e: "Afferent is CN V1, Efferent is CN VII." },
+    { topic: "Abdomen", q: "Meckel's diverticulum follows the rule of:", a: "2", d: ["3", "4", "5"], e: "Rule of 2: 2 feet from IC junction, 2 inches long, 2% population." }
+  ],
+  "Physiology": [
+    { topic: "CNS", q: "The primary neurotransmitter at the neuromuscular junction is:", a: "Acetylcholine", d: ["Dopamine", "GABA", "Serotonin"], e: "ACh binds to Nicotinic receptors at the NMJ." },
+    { topic: "Renal", q: "Renin is secreted by:", a: "Juxtaglomerular cells", d: ["Macula Densa", "Mesangial cells", "Podocytes"], e: "JG cells secrete renin in response to hypotension." },
+    { topic: "Endocrine", q: "Which hormone causes ovulation?", a: "LH", d: ["FSH", "Estrogen", "Progesterone"], e: "LH surge triggers ovulation." },
+    { topic: "Respiratory", q: "Surfactant is produced by:", a: "Type II Pneumocytes", d: ["Type I Pneumocytes", "Macrophages", "Clara cells"], e: "Type II cells secrete dipalmitoyl phosphatidylcholine." },
+    { topic: "CVS", q: "The first heart sound (S1) is due to closure of:", a: "Mitral and Tricuspid valves", d: ["Aortic and Pulmonary valves", "Mitral valve only", "Aortic valve only"], e: "Closure of AV valves (Mitral/Tricuspid)." },
+    { topic: "Blood", q: "Which coagulation factor is deficient in Hemophilia A?", a: "Factor VIII", d: ["Factor IX", "Factor X", "Factor VII"], e: "Hemophilia A is Factor VIII deficiency." },
+    { topic: "GIT", q: "Parietal cells of stomach secrete:", a: "HCl and Intrinsic Factor", d: ["Pepsinogen", "Gastrin", "Mucus"], e: "Parietal cells secrete Acid and IF (crucial for B12)." },
+    { topic: "Nerve Muscle", q: "Which protein covers the active site on actin?", a: "Tropomyosin", d: ["Troponin C", "Troponin I", "Myosin"], e: "Tropomyosin blocks the myosin binding site at rest." },
+    { topic: "Special Senses", q: "Myopia is corrected by:", a: "Concave lens", d: ["Convex lens", "Cylindrical lens", "Bifocals"], e: "Concave (minus) lenses diverge light to move focus back to retina." },
+    { topic: "Endocrine", q: "Tetany is caused by:", a: "Hypocalcemia", d: ["Hypercalcemia", "Hyperkalemia", "Hyponatremia"], e: "Low calcium increases neuronal excitability." }
+  ],
+  "Biochemistry": [
+    { topic: "Vitamins", q: "Pellagra is caused by deficiency of:", a: "Niacin (B3)", d: ["Thiamine (B1)", "Riboflavin (B2)", "Pyridoxine (B6)"], e: "3Ds: Dermatitis, Diarrhea, Dementia." },
+    { topic: "Enzymes", q: "Rate limiting enzyme of Glycolysis is:", a: "PFK-1", d: ["Hexokinase", "Pyruvate Kinase", "Glucokinase"], e: "Phosphofructokinase-1 is the main control point." },
+    { topic: "Metabolism", q: "Ketone bodies are produced in:", a: "Liver mitochondria", d: ["Liver cytosol", "Muscle", "Kidney"], e: "Liver is the primary site of ketogenesis." },
+    { topic: "Genetics", q: "Which DNA base is not found in RNA?", a: "Thymine", d: ["Uracil", "Adenine", "Guanine"], e: "RNA contains Uracil instead of Thymine." },
+    { topic: "Metabolism", q: "Von Gierke's disease is a deficiency of:", a: "Glucose-6-phosphatase", d: ["Muscle phosphorylase", "Acid maltase", "Branching enzyme"], e: "GSD Type I." },
+    { topic: "Vitamins", q: "Bitot's spots are seen in deficiency of:", a: "Vitamin A", d: ["Vitamin D", "Vitamin E", "Vitamin K"], e: "Sign of Xerophthalmia." },
+    { topic: "Lipids", q: "Which lipoprotein carries cholesterol from tissues to liver?", a: "HDL", d: ["LDL", "VLDL", "Chylomicrons"], e: "Reverse cholesterol transport." },
+    { topic: "Amino Acids", q: "Maple Syrup Urine Disease involves metabolism of:", a: "Branched chain amino acids", d: ["Aromatic amino acids", "Sulfur amino acids", "Basic amino acids"], e: "Leucine, Isoleucine, Valine." }
+  ],
+  "Pathology": [
+    { topic: "Cell Injury", q: "Which necrosis is characteristic of TB?", a: "Caseous necrosis", d: ["Coagulative necrosis", "Liquefactive necrosis", "Fibrinoid necrosis"], e: "Cheesy appearance, typical of Tuberculosis." },
+    { topic: "Neoplasia", q: "Reed-Sternberg cells are seen in:", a: "Hodgkin's Lymphoma", d: ["Non-Hodgkin's Lymphoma", "Burkitt's Lymphoma", "Multiple Myeloma"], e: "Owl-eye cells." },
+    { topic: "Genetics", q: "Philadelphia chromosome is associated with:", a: "CML", d: ["AML", "CLL", "ALL"], e: "t(9;22) BCR-ABL fusion." },
+    { topic: "Inflammation", q: "First cell to migrate to site of acute inflammation:", a: "Neutrophil", d: ["Macrophage", "Lymphocyte", "Eosinophil"], e: "Neutrophils arrive first." },
+    { topic: "CVS", q: "Aschoff bodies are seen in:", a: "Rheumatic Heart Disease", d: ["Infective Endocarditis", "MI", "Syphilitic Aortitis"], e: "Pathognomonic granulomatous lesions." },
+    { topic: "Amyloid", q: "Stain used for Amyloid:", a: "Congo Red", d: ["H&E", "PAS", "Prussian Blue"], e: "Apple-green birefringence." },
+    { topic: "Tumors", q: "Seminoma corresponds to which ovarian tumor?", a: "Dysgerminoma", d: ["Teratoma", "Choriocarcinoma", "Yolk sac tumor"], e: "Both are germ cell tumors with similar histology." },
+    { topic: "GIT", q: "Skip lesions are seen in:", a: "Crohn's Disease", d: ["Ulcerative Colitis", "Typhoid", "TB Intestine"], e: "UC is continuous; Crohn's has skip areas." }
+  ],
+  "Microbiology": [
+    { topic: "Bacteriology", q: "Causative agent of Gas Gangrene:", a: "Clostridium perfringens", d: ["Clostridium tetani", "Bacillus anthracis", "Staph aureus"], e: "Anaerobic gram positive rod." },
+    { topic: "Virology", q: "Negri bodies are seen in:", a: "Rabies", d: ["Herpes", "Measles", "Pox virus"], e: "Intracytoplasmic inclusions in Rabies." },
+    { topic: "Mycology", q: "Germ tube test is positive for:", a: "Candida albicans", d: ["Candida tropicalis", "Cryptococcus", "Aspergillus"], e: "Differentiates Albicans from Non-Albicans." },
+    { topic: "Parasitology", q: "Vector for Malaria:", a: "Female Anopheles", d: ["Male Anopheles", "Culex", "Aedes"], e: "Transmits Plasmodium." },
+    { topic: "Bacteriology", q: "Rice water stool is seen in:", a: "Cholera", d: ["Typhoid", "Dysentery", "Giardiasis"], e: "Vibrio cholerae." },
+    { topic: "Virology", q: "Tzank smear is used for:", a: "Herpes/Varicella", d: ["Leprosy", "Syphilis", "Gonorrhea"], e: "Shows multinucleated giant cells." },
+    { topic: "Culture", q: "Lowenstein Jensen medium is used for:", a: "Mycobacterium tuberculosis", d: ["E. coli", "Corynebacterium", "Vibrio"], e: "Selective medium for TB." },
+    { topic: "Bacteriology", q: "Satellitism is shown by:", a: "Haemophilus influenzae", d: ["Staph aureus", "Streptococcus", "Pneumococcus"], e: "Grows near Staph streak." }
+  ],
+  "Pharmacology": [
+    { topic: "General", q: "First pass metabolism occurs primarily in:", a: "Liver", d: ["Kidney", "Lungs", "Intestine"], e: "Reduces bioavailability." },
+    { topic: "ANS", q: "Drug of choice for Anaphylactic shock:", a: "Adrenaline", d: ["Atropine", "Dopamine", "Noradrenaline"], e: "IM Adrenaline (1:1000)." },
+    { topic: "CVS", q: "Dry cough is a side effect of:", a: "ACE Inhibitors", d: ["Beta blockers", "CCBs", "Diuretics"], e: "Due to bradykinin accumulation." },
+    { topic: "Anti-TB", q: "Which drug causes Optic Neuritis?", a: "Ethambutol", d: ["Isoniazid", "Rifampicin", "Pyrazinamide"], e: "E for Eye (Ethambutol)." },
+    { topic: "Toxicology", q: "Antidote for Paracetamol poisoning:", a: "N-Acetylcysteine", d: ["Atropine", "Flumazenil", "Naloxone"], e: "Replenishes glutathione." },
+    { topic: "CNS", q: "Therapeutic index is a measure of:", a: "Drug safety", d: ["Drug potency", "Drug efficacy", "Drug onset"], e: "Ratio of LD50 to ED50." },
+    { topic: "Antimicrobial", q: "Red man syndrome is caused by:", a: "Vancomycin", d: ["Penicillin", "Gentamicin", "Ciprofloxacin"], e: "Rapid infusion histamine release." },
+    { topic: "Diuretics", q: "Furosemide acts on:", a: "Ascending Loop of Henle", d: ["PCT", "DCT", "Collecting Duct"], e: "Loop diuretic." }
+  ],
+  "Forensic Medicine": [
+    { topic: "Thanatology", q: "Rigor mortis starts first in:", a: "Eyelids", d: ["Heart", "Legs", "Fingers"], e: "Nysten's law: Eye muscles first." },
+    { topic: "Injuries", q: "Contusion implies:", a: "Bruise", d: ["Cut", "Scratch", "Stab"], e: "Extravasation of blood." },
+    { topic: "Toxicology", q: "Cherry red color of blood is seen in:", a: "Carbon Monoxide", d: ["Cyanide", "Nitrate", "Phosphorus"], e: "Carboxyhemoglobin." },
+    { topic: "Identification", q: "Cephalic Index is used for:", a: "Race determination", d: ["Sex determination", "Age determination", "Stature"], e: "Race identification." },
+    { topic: "Courts", q: "Hostile witness is declared by:", a: "Judge", d: ["Prosecutor", "Defense lawyer", "Police"], e: "When witness turns against the party calling them." },
+    { topic: "Asphyxia", q: "Ligature mark is horizontal in:", a: "Strangulation", d: ["Hanging", "Burking", "Smothering"], e: "Oblique in hanging." },
+    { topic: "Toxicology", q: "Gunshot residue on hands indicates:", a: "Person fired a gun", d: ["Person held a gun", "Person cleaned a gun", "None"], e: "Recent firing." }
+  ],
+  "PSM (Community Medicine)": [
+    { topic: "Epidemiology", q: "Denominator in Case Fatality Rate is:", a: "Total cases", d: ["Total population", "Total deaths", "Mid year population"], e: "Measures virulence." },
+    { topic: "Vectors", q: "Vector for Dengue:", a: "Aedes aegypti", d: ["Anopheles", "Culex", "Sandfly"], e: "Day biter." },
+    { topic: "Programs", q: "DOTS is associated with:", a: "RNTCP / NTEP", d: ["NLEP", "NVBDCP", "NACP"], e: "Tuberculosis control." },
+    { topic: "Vaccines", q: "Which vaccine leaves a permanent scar?", a: "BCG", d: ["DPT", "Polio", "Hepatitis B"], e: "Intradermal injection." },
+    { topic: "Health", q: "ASHA worker population coverage:", a: "1000", d: ["5000", "3000", "10000"], e: "Village level." },
+    { topic: "Waste", q: "Anatomical waste color code:", a: "Yellow", d: ["Red", "Blue", "Black"], e: "Incineration." },
+    { topic: "Screening", q: "Pap smear is which level of prevention?", a: "Secondary", d: ["Primary", "Tertiary", "Primordial"], e: "Early diagnosis and treatment." }
+  ],
+  "Ophthalmology": [
+    { topic: "Retina", q: "Cherry red spot is seen in:", a: "CRAO", d: ["CRVO", "Diabetic Retinopathy", "Glaucoma"], e: "Central Retinal Artery Occlusion." },
+    { topic: "Lens", q: "Most common cause of blindness in India:", a: "Cataract", d: ["Glaucoma", "Refractive error", "Vitamin A deficiency"], e: "Senile cataract." },
+    { topic: "Cornea", q: "Dendritic ulcer is caused by:", a: "Herpes Simplex", d: ["Fungal", "Bacterial", "Acanthamoeba"], e: "Viral keratitis." },
+    { topic: "Glaucoma", q: "Drug contraindicated in Glaucoma:", a: "Atropine", d: ["Pilocarpine", "Timolol", "Latanoprost"], e: "Mydriatics precipitate angle closure." },
+    { topic: "Eyelid", q: "Chalazion is inflammation of:", a: "Meibomian gland", d: ["Zeis gland", "Moll gland", "Lacrimal gland"], e: "Chronic granulomatous inflammation." },
+    { topic: "Optics", q: "Myopia is also known as:", a: "Short sightedness", d: ["Long sightedness", "Old age sight", "Lazy eye"], e: "Near objects clear, far objects blurry." }
+  ],
+  "ENT": [
+    { topic: "Ear", q: "Grommet insertion is done for:", a: "Glue ear (OME)", d: ["CSOM", "ASOM", "Otosclerosis"], e: "Otitis Media with Effusion." },
+    { topic: "Nose", q: "Commonest site of Epistaxis:", a: "Little's Area", d: ["Woodruff's area", "Turbinates", "Septum posterior"], e: "Kiesselbach's plexus." },
+    { topic: "Throat", q: "Quinsy is:", a: "Peritonsillar abscess", d: ["Retropharyngeal abscess", "Parapharyngeal abscess", "Ludwig's angina"], e: "Collection of pus beside tonsil." },
+    { topic: "Ear", q: "Carhart's notch is seen in:", a: "Otosclerosis", d: ["CSOM", "Meniere's", "Presbycusis"], e: "Bone conduction dip at 2000Hz." },
+    { topic: "Nose", q: "Saddle nose is caused by:", a: "Syphilis", d: ["TB", "Leprosy", "Rhinoscleroma"], e: "Congenital syphilis." },
+    { topic: "Larynx", q: "Singer's nodule is:", a: "Vocal nodule", d: ["Vocal polyp", "Papilloma", "Cyst"], e: "Due to voice abuse." }
+  ],
+  "Medicine": [
+    { topic: "CVS", q: "Murmur of Mitral Stenosis:", a: "Mid-diastolic rumbling", d: ["Pansystolic", "Ejection systolic", "Early diastolic"], e: "With presystolic accentuation." },
+    { topic: "Neuro", q: "Drug of choice for Status Epilepticus:", a: "Lorazepam", d: ["Phenytoin", "Valproate", "Carbamazepine"], e: "IV Benzodiazepine." },
+    { topic: "Resp", q: "Most common cause of Community Acquired Pneumonia:", a: "Streptococcus pneumoniae", d: ["Staph aureus", "Klebsiella", "Mycoplasma"], e: "Pneumococcus." },
+    { topic: "Endocrine", q: "Graves disease is associated with:", a: "Hyperthyroidism", d: ["Hypothyroidism", "Addison's", "Cushing's"], e: "Autoimmune thyrotoxicosis." },
+    { topic: "GIT", q: "H. pylori is associated with:", a: "Peptic Ulcer", d: ["Crohn's", "UC", "Achalasia"], e: "Gastritis and Ulcers." },
+    { topic: "Rheumatology", q: "Pannus formation is seen in:", a: "Rheumatoid Arthritis", d: ["Osteoarthritis", "Gout", "SLE"], e: "Synovial proliferation." },
+    { topic: "Renal", q: "Most common cause of Nephrotic syndrome in children:", a: "Minimal Change Disease", d: ["Membranous", "FSGS", "IgA Nephropathy"], e: "Responds well to steroids." },
+    { topic: "Blood", q: "Auer rods are seen in:", a: "AML", d: ["CML", "ALL", "CLL"], e: "Acute Myeloid Leukemia." }
+  ],
+  "General Surgery": [
+    { topic: "Abdomen", q: "Murphy's sign is positive in:", a: "Acute Cholecystitis", d: ["Acute Appendicitis", "Pancreatitis", "Gastritis"], e: "Inspiratory arrest on RUQ palpation." },
+    { topic: "Burns", q: "Rule of Nines is used for:", a: "Burn Surface Area", d: ["Burn Depth", "Dehydration", "Consciousness"], e: "Wallace Rule of 9s." },
+    { topic: "Breast", q: "Most common benign breast lump:", a: "Fibroadenoma", d: ["Cyst", "Abscess", "Phyllodes"], e: "Mouse in the breast." },
+    { topic: "Abdomen", q: "McBurney's point tenderness indicates:", a: "Appendicitis", d: ["Cholecystitis", "Diverticulitis", "Hernia"], e: "RLQ tenderness." },
+    { topic: "Thyroid", q: "Most common thyroid malignancy:", a: "Papillary carcinoma", d: ["Follicular", "Medullary", "Anaplastic"], e: "Best prognosis." },
+    { topic: "Trauma", q: "FAST scan is used for:", a: "Abdominal trauma", d: ["Head injury", "Chest pain", "Fractures"], e: "Focused Assessment with Sonography for Trauma." },
+    { topic: "Hernia", q: "Hesselbach's triangle is site for:", a: "Direct Inguinal Hernia", d: ["Indirect Inguinal Hernia", "Femoral Hernia", "Umbilical Hernia"], e: "Medial to inferior epigastric vessels." }
+  ],
+  "Obstetrics & Gynecology": [
+    { topic: "Obs", q: "Most common site of Ectopic Pregnancy:", a: "Ampulla", d: ["Isthmus", "Fimbria", "Ovary"], e: "Fallopian tube ampulla." },
+    { topic: "Gynae", q: "Screening test for Cervical Cancer:", a: "Pap Smear", d: ["USG", "CA-125", "Colposcopy"], e: "Cytology." },
+    { topic: "Obs", q: "Drug of choice for Eclampsia:", a: "Magnesium Sulfate", d: ["Diazepam", "Phenytoin", "Labetalol"], e: "Prevents seizures." },
+    { topic: "Gynae", q: "Strawberry cervix is seen in:", a: "Trichomonas", d: ["Candida", "Gardnerella", "Chlamydia"], e: "Punctate hemorrhages." },
+    { topic: "Obs", q: "Active management of 3rd stage of labor prevents:", a: "PPH", d: ["Inversion", "Sepsis", "Tears"], e: "Post Partum Hemorrhage." },
+    { topic: "Gynae", q: "Chocolate cyst is seen in:", a: "Endometriosis", d: ["PCOS", "Dermoid", "Fibroid"], e: "Ovarian endometriosis." },
+    { topic: "Obs", q: "Physiological anemia of pregnancy is due to:", a: "Hemodilution", d: ["Iron deficiency", "Blood loss", "Hemolysis"], e: "Plasma volume increases > RBC mass." }
+  ],
+  "Pediatrics": [
+    { topic: "Infections", q: "Koplik spots are seen in:", a: "Measles", d: ["Mumps", "Rubella", "Chickenpox"], e: "Pathognomonic enanthem." },
+    { topic: "Development", q: "Social smile appears at:", a: "2 months", d: ["4 months", "6 months", "1 month"], e: "Milestone." },
+    { topic: "Neonatology", q: "Vitamin K is given at birth to prevent:", a: "Hemorrhagic disease of newborn", d: ["Jaundice", "Rickets", "Scurvy"], e: "Clotting factor deficiency." },
+    { topic: "Cardio", q: "Tetralogy of Fallot includes:", a: "VSD, PS, Overriding Aorta, RVH", d: ["ASD, PS, RVH", "VSD, AS, LVH", "PDA, VSD"], e: "Cyanotic heart disease." },
+    { topic: "Nutrition", q: "Flag sign of hair is seen in:", a: "Kwashiorkor", d: ["Marasmus", "Scurvy", "Rickets"], e: "Protein deficiency." },
+    { topic: "GI", q: "Projectile vomiting is seen in:", a: "Pyloric Stenosis", d: ["Intussusception", "GERD", "Atresia"], e: "Hypertrophic Pyloric Stenosis." },
+    { topic: "Genetics", q: "Trisomy 21 is:", a: "Down Syndrome", d: ["Edward", "Patau", "Turner"], e: "Mongolism." }
+  ],
+  "Orthopedics": [
+    { topic: "Fractures", q: "Colles fracture is fracture of:", a: "Distal end of radius", d: ["Scaphoid", "Humerus", "Ulna"], e: "Dinner fork deformity." },
+    { topic: "Bone", q: "Bamboo spine is seen in:", a: "Ankylosing Spondylitis", d: ["RA", "OA", "Gout"], e: "Fusion of vertebrae." },
+    { topic: "Infection", q: "Sequestrum is seen in:", a: "Chronic Osteomyelitis", d: ["Acute Osteomyelitis", "TB", "Tumor"], e: "Dead bone." },
+    { topic: "Tumor", q: "Sunburst appearance is seen in:", a: "Osteosarcoma", d: ["Ewing's", "Giant Cell Tumor", "Chondrosarcoma"], e: "Aggressive periosteal reaction." },
+    { topic: "Nerve", q: "Wrist drop is due to:", a: "Radial nerve injury", d: ["Ulnar nerve", "Median nerve", "Axillary nerve"], e: "Extensor paralysis." }
+  ],
+  "Dermatology": [
+    { topic: "Signs", q: "Auspitz sign is positive in:", a: "Psoriasis", d: ["Lichen Planus", "Eczema", "Pemphigus"], e: "Pinpoint bleeding." },
+    { topic: "Infections", q: "Burrow is pathognomonic of:", a: "Scabies", d: ["Lice", "Ticks", "Mites"], e: "Sarcoptes scabiei." },
+    { topic: "Bullous", q: "Tzanck smear is used for:", a: "Pemphigus", d: ["Psoriasis", "Acne", "Vitiligo"], e: "Acantholytic cells." },
+    { topic: "Papulosquamous", q: "Wickham's striae are seen in:", a: "Lichen Planus", d: ["Psoriasis", "Pityriasis Rosea", "Eczema"], e: "White lacy pattern." },
+    { topic: "Infections", q: "Honey colored crust is seen in:", a: "Impetigo", d: ["Ecthyma", "Furuncle", "Carbuncle"], e: "Staph/Strep infection." }
+  ],
+  "Psychiatry": [
+    { topic: "Psychosis", q: "Auditory hallucinations are common in:", a: "Schizophrenia", d: ["Depression", "Mania", "Delirium"], e: "First rank symptom." },
+    { topic: "Therapy", q: "ECT is most effective in:", a: "Severe Depression", d: ["Anxiety", "OCD", "Phobia"], e: "Suicidal depression." },
+    { topic: "Addiction", q: "Delirium tremens is seen in withdrawal of:", a: "Alcohol", d: ["Opioids", "Cannabis", "Cocaine"], e: "Visual hallucinations/tremors." },
+    { topic: "Drugs", q: "Lithium is used for:", a: "Bipolar Disorder", d: ["Schizophrenia", "Anxiety", "Sleep"], e: "Mood stabilizer." },
+    { topic: "Signs", q: "Waxy flexibility is seen in:", a: "Catatonia", d: ["Mania", "Depression", "Delusion"], e: "Schizophrenia subtype." }
+  ],
+  "Radiology": [
+    { topic: "Chest", q: "Silhouette sign is seen in:", a: "Pneumonia/Consolidation", d: ["Pneumothorax", "Effusion", "Fibrosis"], e: "Loss of heart border." },
+    { topic: "Head", q: "Best investigation for acute hemorrhage:", a: "NCCT Head", d: ["MRI", "X-ray", "USG"], e: "Blood appears hyperdense." },
+    { topic: "Obs", q: "Snow storm appearance on USG:", a: "Hydatidiform Mole", d: ["Ectopic", "Fibroid", "Cyst"], e: "Vesicular pattern." },
+    { topic: "GI", q: "Bird beak appearance is seen in:", a: "Achalasia Cardia", d: ["Ca Esophagus", "Stricture", "Hernia"], e: "Barium swallow." },
+    { topic: "Bone", q: "Onion peel appearance is seen in:", a: "Ewing's Sarcoma", d: ["Osteosarcoma", "Osteoclastoma", "Chondroma"], e: "Periosteal reaction." }
+  ],
+  "Anesthesia": [
+    { topic: "Drugs", q: "Ketamine causes:", a: "Dissociative Anesthesia", d: ["Sleep", "Paralysis", "Analgesia only"], e: "Hallucinogenic." },
+    { topic: "Equipment", q: "Color of Oxygen cylinder:", a: "Black body white shoulder", d: ["Blue", "Gray", "Black"], e: "Standard code." },
+    { topic: "Relaxants", q: "Succinylcholine is a:", a: "Depolarizing muscle relaxant", d: ["Non-depolarizing", "Local anesthetic", "Sedative"], e: "Short acting." },
+    { topic: "Spinal", q: "Landmark for spinal anesthesia:", a: "Tuffier's line (L4)", d: ["T10", "L1", "S1"], e: "Iliac crests." },
+    { topic: "Complications", q: "Malignant hyperthermia is triggered by:", a: "Halothane/Scoline", d: ["Propofol", "Ketamine", "Nitrous oxide"], e: "Dantrolene is antidote." }
+  ]
+};
 
-  // --- PATHOLOGY ---
-  {
-    id: 4001,
-    text: "A 30-year-old male presents with a painless testicular mass. Biopsy shows 'fried egg' cells. Diagnosis?",
-    options: ["Seminoma", "Yolk sac tumor", "Choriocarcinoma", "Teratoma"],
-    correctAnswerIndex: 0,
-    explanation: "Seminoma shows uniform cells with clear cytoplasm (fried egg appearance).",
-    subject: "Pathology",
-    topic: "Neoplasia"
-  },
-  {
-    id: 4002,
-    text: "Which of the following is an example of Type II Hypersensitivity?",
-    options: ["Anaphylaxis", "Goodpasture's Syndrome", "Serum Sickness", "Contact Dermatitis"],
-    correctAnswerIndex: 1,
-    explanation: "Goodpasture's syndrome involves antibodies against basement membrane (Type II).",
-    subject: "Pathology",
-    topic: "Inflammation"
-  },
-  {
-    id: 4003,
-    text: "Reed-Sternberg cells are characteristic of:",
-    options: ["Burkitt's Lymphoma", "Hodgkin's Lymphoma", "Multiple Myeloma", "CLL"],
-    correctAnswerIndex: 1,
-    explanation: "Owl-eye appearance Reed-Sternberg cells are hallmark of Hodgkin's Lymphoma.",
-    subject: "Pathology",
-    topic: "Hematology"
-  },
-  {
-    id: 4004,
-    text: "Aschoff bodies are pathognomonic for:",
-    options: ["Rheumatic Fever", "Infective Endocarditis", "Myocardial Infarction", "TB Pericarditis"],
-    correctAnswerIndex: 0,
-    explanation: "Aschoff bodies are granulomatous lesions found in Rheumatic Heart Disease.",
-    subject: "Pathology",
-    topic: "Cardiovascular Pathology"
-  },
-  {
-    id: 4005,
-    text: "Which stain is used for Amyloid?",
-    options: ["H&E", "Congo Red", "PAS", "Giemsa"],
-    correctAnswerIndex: 1,
-    explanation: "Congo Red stain demonstrates apple-green birefringence under polarized light for amyloid.",
-    subject: "Pathology",
-    topic: "Stains"
-  },
-
-  // --- MICROBIOLOGY ---
-  {
-    id: 5001,
-    text: "Which organism is most commonly associated with rheumatic heart disease?",
-    options: ["Staph aureus", "Streptococcus pyogenes (Group A)", "Streptococcus viridans", "Enterococcus"],
-    correctAnswerIndex: 1,
-    explanation: "Rheumatic fever is a sequela of Group A Streptococcal pharyngitis.",
-    subject: "Microbiology",
-    topic: "Staph vs Strep"
-  },
-  {
-    id: 5002,
-    text: "Satellite phenomenon is shown by:",
-    options: ["H. influenzae", "S. aureus", "S. pneumoniae", "N. meningitidis"],
-    correctAnswerIndex: 0,
-    explanation: "Haemophilus influenzae grows near S. aureus colonies which provide V factor (NAD).",
-    subject: "Microbiology",
-    topic: "Bacteria"
-  },
-  {
-    id: 5003,
-    text: "Rice water stool is characteristic of:",
-    options: ["Typhoid", "Cholera", "Shigellosis", "Amoebiasis"],
-    correctAnswerIndex: 1,
-    explanation: "Vibrio cholerae causes secretory diarrhea described as rice water stool.",
-    subject: "Microbiology",
-    topic: "GI Infections"
-  },
-  {
-    id: 5004,
-    text: "The vector for Japanese Encephalitis is:",
-    options: ["Anopheles", "Aedes", "Culex", "Mansonia"],
-    correctAnswerIndex: 2,
-    explanation: "Culex mosquitoes (specifically Culex tritaeniorhynchus) transmit JE.",
-    subject: "Microbiology",
-    topic: "Virology"
-  },
-  {
-    id: 5005,
-    text: "Lowenstein-Jensen (LJ) medium is used for:",
-    options: ["Corynebacterium", "Mycobacterium tuberculosis", "Neisseria", "Staphylococcus"],
-    correctAnswerIndex: 1,
-    explanation: "LJ medium is the selective medium for culturing Mycobacterium tuberculosis.",
-    subject: "Microbiology",
-    topic: "Culture Media"
-  },
-
-  // --- PHARMACOLOGY ---
-  {
-    id: 6001,
-    text: "Which of the following antitubercular drugs causes optic neuritis?",
-    options: ["Isoniazid", "Rifampicin", "Ethambutol", "Pyrazinamide"],
-    correctAnswerIndex: 2,
-    explanation: "Ethambutol causes retrobulbar neuritis.",
-    subject: "Pharmacology",
-    topic: "Antimicrobials"
-  },
-  {
-    id: 6002,
-    text: "Antidote for Paracetamol poisoning is:",
-    options: ["Atropine", "N-Acetylcysteine", "Flumazenil", "Naloxone"],
-    correctAnswerIndex: 1,
-    explanation: "N-Acetylcysteine replenishes glutathione.",
-    subject: "Pharmacology",
-    topic: "Toxicology"
-  },
-  {
-    id: 6003,
-    text: "Red Man Syndrome is a side effect of:",
-    options: ["Penicillin", "Vancomycin", "Gentamicin", "Ciprofloxacin"],
-    correctAnswerIndex: 1,
-    explanation: "Rapid infusion of Vancomycin causes histamine release leading to Red Man Syndrome.",
-    subject: "Pharmacology",
-    topic: "Antimicrobials"
-  },
-  {
-    id: 6004,
-    text: "Drug of choice for anaphylactic shock is:",
-    options: ["Adrenaline", "Hydrocortisone", "Avil", "Atropine"],
-    correctAnswerIndex: 0,
-    explanation: "Adrenaline (IM) is the life-saving drug of choice for anaphylaxis.",
-    subject: "Pharmacology",
-    topic: "Emergency Drugs"
-  },
-  {
-    id: 6005,
-    text: "Dry cough is a common side effect of:",
-    options: ["Beta blockers", "ACE Inhibitors", "Calcium Channel Blockers", "Diuretics"],
-    correctAnswerIndex: 1,
-    explanation: "ACE inhibitors increase bradykinin levels, leading to a dry cough.",
-    subject: "Pharmacology",
-    topic: "Cardiovascular Drugs"
-  },
-
-  // --- FORENSIC MEDICINE ---
-  {
-    id: 7001,
-    text: "Post-mortem lividity becomes fixed in approximately:",
-    options: ["2-4 hours", "6-8 hours", "12-24 hours", "36 hours"],
-    correctAnswerIndex: 1,
-    explanation: "Lividity typically fixes around 6-8 hours.",
-    subject: "Forensic Medicine",
-    topic: "Thanatology"
-  },
-  {
-    id: 7002,
-    text: "Brush burn is a type of:",
-    options: ["Thermal burn", "Electrical burn", "Abrasion", "Laceration"],
-    correctAnswerIndex: 2,
-    explanation: "Brush burn is a grazing abrasion caused by friction against a rough surface.",
-    subject: "Forensic Medicine",
-    topic: "Mechanical Injuries"
-  },
-  {
-    id: 7003,
-    text: "Pugilistic attitude is seen in:",
-    options: ["Drowning", "Burn death", "Hanging", "Strychnine poisoning"],
-    correctAnswerIndex: 1,
-    explanation: "Heat coagulation of proteins causes muscles to contract, leading to a boxer-like pose in burn victims.",
-    subject: "Forensic Medicine",
-    topic: "Thermal Injuries"
-  },
-  {
-    id: 7004,
-    text: "Typical hanging is defined as:",
-    options: ["Ligature point at occiput", "Ligature point at chin", "Feet touching ground", "Complete suspension with knot at occiput"],
-    correctAnswerIndex: 3,
-    explanation: "Typical hanging: Knot at occiput, complete suspension.",
-    subject: "Forensic Medicine",
-    topic: "Asphyxia"
-  },
-
-  // --- MEDICINE ---
-  {
-    id: 8001,
-    text: "What is the drug of choice for status epilepticus?",
-    options: ["Phenytoin", "Lorazepam", "Valproate", "Carbamazepine"],
-    correctAnswerIndex: 1,
-    explanation: "IV Lorazepam is first line.",
-    subject: "Medicine",
-    topic: "Neurology"
-  },
-  {
-    id: 8002,
-    text: "Which murmur is heard in Mitral Stenosis?",
-    options: ["Mid-diastolic rumbling murmur", "Pan-systolic murmur", "Ejection systolic murmur", "Early diastolic murmur"],
-    correctAnswerIndex: 0,
-    explanation: "Mitral stenosis presents with a localized mid-diastolic rumbling murmur with presystolic accentuation.",
-    subject: "Medicine",
-    topic: "Cardiology"
-  },
-  {
-    id: 8003,
-    text: "Beck's Triad for Cardiac Tamponade includes hypotension, muffled heart sounds, and:",
-    options: ["Bradycardia", "Raised JVP", "Pulmonary Edema", "Wheezing"],
-    correctAnswerIndex: 1,
-    explanation: "Beck's Triad: Hypotension, Muffled Heart Sounds, Raised JVP (Distended neck veins).",
-    subject: "Medicine",
-    topic: "Cardiology"
-  },
-  {
-    id: 8004,
-    text: "Kayser-Fleischer rings are seen in:",
-    options: ["Hemochromatosis", "Wilson's Disease", "Primary Biliary Cirrhosis", "Hepatitis B"],
-    correctAnswerIndex: 1,
-    explanation: "Copper deposition in the cornea (Descemet's membrane) in Wilson's Disease.",
-    subject: "Medicine",
-    topic: "Hepatology"
-  },
-  {
-    id: 8005,
-    text: "The most common cause of Community Acquired Pneumonia is:",
-    options: ["Staphylococcus aureus", "Streptococcus pneumoniae", "Mycoplasma", "Klebsiella"],
-    correctAnswerIndex: 1,
-    explanation: "Streptococcus pneumoniae is the leading cause of CAP worldwide.",
-    subject: "Medicine",
-    topic: "Pulmonology"
-  },
-
-  // --- SURGERY ---
-  {
-    id: 9001,
-    text: "Positive McBurney's sign is indicative of:",
-    options: ["Cholecystitis", "Appendicitis", "Pancreatitis", "Diverticulitis"],
-    correctAnswerIndex: 1,
-    explanation: "Tenderness at McBurney's point suggests Appendicitis.",
-    subject: "General Surgery",
-    topic: "Abdomen"
-  },
-  {
-    id: 9002,
-    text: "Rule of Nines is used for:",
-    options: ["Dehydration assessment", "Burn surface area", "Coma scaling", "Trauma triage"],
-    correctAnswerIndex: 1,
-    explanation: "Wallace Rule of Nines estimates Total Body Surface Area (TBSA) in burns.",
-    subject: "General Surgery",
-    topic: "Burns"
-  },
-  {
-    id: 9003,
-    text: "Murphy's sign is positive in:",
-    options: ["Acute Appendicitis", "Acute Cholecystitis", "Acute Pancreatitis", "Peptic Ulcer"],
-    correctAnswerIndex: 1,
-    explanation: "Inspiratory arrest on palpation of RUQ suggests Acute Cholecystitis.",
-    subject: "General Surgery",
-    topic: "Abdomen"
-  },
-  {
-    id: 9004,
-    text: "Triple assessment for breast lump includes clinical exam, imaging, and:",
-    options: ["FNAC/Biopsy", "Tumor markers", "Genetic testing", "Bone scan"],
-    correctAnswerIndex: 0,
-    explanation: "Triple assessment: Clinical exam, Imaging (Mammogram/USG), and Pathology (FNAC/Core Biopsy).",
-    subject: "General Surgery",
-    topic: "Breast"
-  },
-  {
-    id: 9005,
-    text: "Which gas is most commonly used for creating pneumoperitoneum in laparoscopic surgery?",
-    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"],
-    correctAnswerIndex: 2,
-    explanation: "CO2 is used because it is non-combustible and highly soluble in blood (reducing risk of embolism).",
-    subject: "General Surgery",
-    topic: "Laparoscopy"
-  },
-
-  // --- OBGYN ---
-  {
-    id: 10001,
-    text: "The most common site of ectopic pregnancy is:",
-    options: ["Ovary", "Cervix", "Ampulla", "Isthmus"],
-    correctAnswerIndex: 2,
-    explanation: "Ampulla of Fallopian tube.",
-    subject: "Obstetrics & Gynecology",
-    topic: "Ectopic Pregnancy"
-  },
-  {
-    id: 10002,
-    text: "Which hormone is responsible for milk ejection reflex?",
-    options: ["Prolactin", "Oxytocin", "Estrogen", "Progesterone"],
-    correctAnswerIndex: 1,
-    explanation: "Oxytocin causes contraction of myoepithelial cells (Let-down reflex).",
-    subject: "Obstetrics & Gynecology",
-    topic: "Lactation"
-  },
-  {
-    id: 10003,
-    text: "Cervical cancer screening is done by:",
-    options: ["USG Abdomen", "Pap Smear", "CA-125", "Hysteroscopy"],
-    correctAnswerIndex: 1,
-    explanation: "Pap Smear is the standard screening test for Cervical Cancer.",
-    subject: "Obstetrics & Gynecology",
-    topic: "Oncology"
-  },
-  {
-    id: 10004,
-    text: "Active management of the third stage of labor involves:",
-    options: ["Immediate cord clamping", "Uterine massage", "Oxytocin injection", "All of the above"],
-    correctAnswerIndex: 3,
-    explanation: "AMTSL includes oxytocin, delayed/controlled cord traction, and uterine massage to prevent PPH.",
-    subject: "Obstetrics & Gynecology",
-    topic: "Labor"
-  },
-  {
-    id: 10005,
-    text: "Strawberry cervix is seen in:",
-    options: ["Candidiasis", "Trichomoniasis", "Bacterial Vaginosis", "Chlamydia"],
-    correctAnswerIndex: 1,
-    explanation: "Punctate hemorrhages on the cervix (Strawberry cervix) are characteristic of Trichomonas vaginalis.",
-    subject: "Obstetrics & Gynecology",
-    topic: "Infections"
-  },
-
-  // --- PEDIATRICS ---
-  {
-    id: 11001,
-    text: "Koplik's spots are seen in:",
-    options: ["Measles", "Mumps", "Rubella", "Chickenpox"],
-    correctAnswerIndex: 0,
-    explanation: "Pathognomonic for Measles.",
-    subject: "Pediatrics",
-    topic: "Infections"
-  },
-  {
-    id: 11002,
-    text: "Physiological jaundice in neonates usually appears on:",
-    options: ["Day 1", "Day 2-3", "Day 7", "Day 14"],
-    correctAnswerIndex: 1,
-    explanation: "Physiological jaundice never appears within the first 24 hours; usually peaks day 3-4.",
-    subject: "Pediatrics",
-    topic: "Neonatology"
-  },
-  {
-    id: 11003,
-    text: "Tetralogy of Fallot includes all EXCEPT:",
-    options: ["VSD", "Pulmonary Stenosis", "Overriding Aorta", "ASD"],
-    correctAnswerIndex: 3,
-    explanation: "TOF includes VSD, Pulmonary Stenosis, Overriding Aorta, and RV Hypertrophy. ASD is not part of the tetrad.",
-    subject: "Pediatrics",
-    topic: "Cardiology"
-  },
-  {
-    id: 11004,
-    text: "Delayed passage of meconium (>48 hours) suggests:",
-    options: ["Pyloric Stenosis", "Hirschsprung Disease", "Intussusception", "Necrotizing Enterocolitis"],
-    correctAnswerIndex: 1,
-    explanation: "Hirschsprung disease (congenital aganglionic megacolon) presents with delayed meconium.",
-    subject: "Pediatrics",
-    topic: "GI Disorders"
-  },
-  {
-    id: 11005,
-    text: "Which vitamin is given at birth to prevent hemorrhagic disease of the newborn?",
-    options: ["Vitamin A", "Vitamin D", "Vitamin K", "Vitamin C"],
-    correctAnswerIndex: 2,
-    explanation: "Vitamin K is administered to prevent VKDB (Vitamin K Deficiency Bleeding).",
-    subject: "Pediatrics",
-    topic: "Neonatology"
-  },
-
-  // --- PSM ---
-  {
-    id: 12001,
-    text: "The 'Vector' for Dengue fever is:",
-    options: ["Anopheles", "Culex", "Aedes aegypti", "Mansonia"],
-    correctAnswerIndex: 2,
-    explanation: "Aedes aegypti.",
-    subject: "PSM (Community Medicine)",
-    topic: "Vector Borne Diseases"
-  },
-  {
-    id: 12002,
-    text: "Denominator in Case Fatality Rate is:",
-    options: ["Total population", "Total cases", "Total deaths", "Population at risk"],
-    correctAnswerIndex: 1,
-    explanation: "CFR = (Deaths / Total Cases) * 100.",
-    subject: "PSM (Community Medicine)",
-    topic: "Epidemiology"
-  },
-  {
-    id: 12003,
-    text: "ASHA worker is located at:",
-    options: ["Sub-center", "PHC", "CHC", "Village Level"],
-    correctAnswerIndex: 3,
-    explanation: "Accredited Social Health Activist (ASHA) works at the village level (1 per 1000 population).",
-    subject: "PSM (Community Medicine)",
-    topic: "Health Systems"
-  },
-  {
-    id: 12004,
-    text: "The 'Iceberg Phenomenon' of disease is NOT shown by:",
-    options: ["Rabies", "Measles", "Rubella", "Influenza"],
-    correctAnswerIndex: 0,
-    explanation: "Rabies is clinically manifest in almost all cases (very few subclinical cases), so it does not show the iceberg phenomenon.",
-    subject: "PSM (Community Medicine)",
-    topic: "Epidemiology"
-  },
-  {
-    id: 12005,
-    text: "Biomedical waste management: Anatomical waste is disposed in which bag?",
-    options: ["Red", "Yellow", "Blue", "Black"],
-    correctAnswerIndex: 1,
-    explanation: "Human anatomical waste is disposed of in Yellow bags for incineration.",
-    subject: "PSM (Community Medicine)",
-    topic: "Waste Management"
-  },
-
-  // --- OPHTHALMOLOGY ---
-  {
-    id: 13001,
-    text: "Cherry red spot at the macula is seen in:",
-    options: ["CRVO", "CRAO", "Diabetic Retinopathy", "Retinitis Pigmentosa"],
-    correctAnswerIndex: 1,
-    explanation: "Central Retinal Artery Occlusion (CRAO).",
-    subject: "Ophthalmology",
-    topic: "Retina"
-  },
-  {
-    id: 13002,
-    text: "Most common cause of blindness in India is:",
-    options: ["Glaucoma", "Cataract", "Refractive Error", "Trachoma"],
-    correctAnswerIndex: 1,
-    explanation: "Cataract is the leading cause.",
-    subject: "Ophthalmology",
-    topic: "Public Health"
-  },
-  {
-    id: 13003,
-    text: "Safest drug for Glaucoma in bronchial asthma is:",
-    options: ["Timolol", "Betaxolol", "Latanoprost", "Pilocarpine"],
-    correctAnswerIndex: 2,
-    explanation: "Latanoprost (Prostaglandin analogue) has no respiratory side effects. Beta blockers (Timolol) are contraindicated.",
-    subject: "Ophthalmology",
-    topic: "Glaucoma"
-  },
-
-  // --- ENT ---
-  {
-    id: 14001,
-    text: "Little's area is the most common site for:",
-    options: ["Nasal polyps", "Epistaxis", "Sinusitis", "Deviated Septum"],
-    correctAnswerIndex: 1,
-    explanation: "Kiesselbach's plexus (Little's area) is the site for anterior epistaxis.",
-    subject: "ENT",
-    topic: "Nose"
-  },
-  {
-    id: 14002,
-    text: "Grommet insertion is done for:",
-    options: ["ASOM", "Glue Ear (OME)", "CSOM", "Otosclerosis"],
-    correctAnswerIndex: 1,
-    explanation: "Otitis Media with Effusion (Glue Ear).",
-    subject: "ENT",
-    topic: "Ear"
-  },
-  {
-    id: 14003,
-    text: "Carhart's notch is seen in:",
-    options: ["CSOM", "Otosclerosis", "Meniere's disease", "Presbycusis"],
-    correctAnswerIndex: 1,
-    explanation: "A dip in bone conduction at 2000Hz (Carhart's notch) is characteristic of Otosclerosis.",
-    subject: "ENT",
-    topic: "Ear"
-  },
-
-  // --- ORTHOPEDICS ---
-  {
-    id: 15001,
-    text: "Colles fracture involves:",
-    options: ["Distal radius with dorsal tilt", "Distal radius with volar tilt", "Scaphoid", "Proximal ulna"],
-    correctAnswerIndex: 0,
-    explanation: "Distal radius fracture with dorsal angulation (Dinner fork deformity).",
-    subject: "Orthopedics",
-    topic: "Fractures"
-  },
-  {
-    id: 15002,
-    text: "Sunday Morning Paralysis is due to compression of:",
-    options: ["Radial Nerve", "Ulnar Nerve", "Median Nerve", "Axillary Nerve"],
-    correctAnswerIndex: 0,
-    explanation: "Radial nerve compression against humerus (Saturday night palsy/Sunday morning paralysis).",
-    subject: "Orthopedics",
-    topic: "Nerve Injuries"
-  },
-  {
-    id: 15003,
-    text: "Bamboo spine is a feature of:",
-    options: ["Osteoarthritis", "Ankylosing Spondylitis", "Rheumatoid Arthritis", "Gout"],
-    correctAnswerIndex: 1,
-    explanation: "Fusion of vertebrae (syndesmophytes) leads to Bamboo spine in Ankylosing Spondylitis.",
-    subject: "Orthopedics",
-    topic: "Spine"
-  },
-
-  // --- DERMATOLOGY ---
-  {
-    id: 16001,
-    text: "Auspitz sign is positive in:",
-    options: ["Lichen Planus", "Psoriasis", "Pemphigus", "Eczema"],
-    correctAnswerIndex: 1,
-    explanation: "Pinpoint bleeding on removal of scales (Psoriasis).",
-    subject: "Dermatology",
-    topic: "Papulosquamous"
-  },
-  {
-    id: 16002,
-    text: "Tzanck smear is used for diagnosis of:",
-    options: ["Pemphigus", "Scabies", "Leprosy", "Ringworm"],
-    correctAnswerIndex: 0,
-    explanation: "Tzanck smear shows acantholytic cells in Pemphigus and multinucleated giant cells in Herpes.",
-    subject: "Dermatology",
-    topic: "Vesiculobullous"
-  },
-  {
-    id: 16003,
-    text: "Burrow is the pathognomonic lesion of:",
-    options: ["Scabies", "Pediculosis", "Tinea", "Impetigo"],
-    correctAnswerIndex: 0,
-    explanation: "Sarcoptes scabiei creates burrows in the skin.",
-    subject: "Dermatology",
-    topic: "Infections"
-  },
-
-  // --- PSYCHIATRY ---
-  {
-    id: 17001,
-    text: "Auditory hallucinations are most common in:",
-    options: ["Delirium", "Schizophrenia", "Depression", "Mania"],
-    correctAnswerIndex: 1,
-    explanation: "Auditory hallucinations are characteristic of Schizophrenia.",
-    subject: "Psychiatry",
-    topic: "Psychosis"
-  },
-  {
-    id: 17002,
-    text: "Wernicke's Encephalopathy is caused by deficiency of:",
-    options: ["Thiamine", "Riboflavin", "Niacin", "Pyridoxine"],
-    correctAnswerIndex: 0,
-    explanation: "Thiamine (B1) deficiency, often in alcoholics.",
-    subject: "Psychiatry",
-    topic: "Substance Abuse"
-  },
-  {
-    id: 17003,
-    text: "Drug of choice for Bipolar Disorder prophylaxis is:",
-    options: ["Lithium", "Haloperidol", "Fluoxetine", "Diazepam"],
-    correctAnswerIndex: 0,
-    explanation: "Lithium is the mood stabilizer of choice for Bipolar prophylaxis.",
-    subject: "Psychiatry",
-    topic: "Mood Disorders"
-  },
-
-  // --- RADIOLOGY ---
-  {
-    id: 18001,
-    text: "Investigation of choice for acute subarachnoid hemorrhage is:",
-    options: ["MRI Brain", "NCCT Head", "X-ray Skull", "Doppler"],
-    correctAnswerIndex: 1,
-    explanation: "Non-Contrast CT is highly sensitive for acute blood (hyperdense).",
-    subject: "Radiology",
-    topic: "Neuroradiology"
-  },
-  {
-    id: 18002,
-    text: "Snow storm appearance on USG is seen in:",
-    options: ["Ectopic pregnancy", "Hydatidiform Mole", "Fibroid", "Ovarian cyst"],
-    correctAnswerIndex: 1,
-    explanation: "Hydatidiform mole shows snow storm appearance.",
-    subject: "Radiology",
-    topic: "Obs Gyn Radiology"
-  },
-  {
-    id: 18003,
-    text: "Target sign on Ultrasound is seen in:",
-    options: ["Appendicitis", "Intussusception", "Cholecystitis", "Pyloric Stenosis"],
-    correctAnswerIndex: 1,
-    explanation: "Intussusception appears as a 'Target' or 'Doughnut' sign on transverse scan.",
-    subject: "Radiology",
-    topic: "Pediatric Radiology"
-  },
-
-  // --- ANESTHESIA ---
-  {
-    id: 19001,
-    text: "Dissociative anesthesia is produced by:",
-    options: ["Propofol", "Ketamine", "Thiopentone", "Etomidate"],
-    correctAnswerIndex: 1,
-    explanation: "Ketamine causes dissociative anesthesia.",
-    subject: "Anesthesia",
-    topic: "Induction Agents"
-  },
-  {
-    id: 19002,
-    text: "Malignant Hyperthermia is triggered by:",
-    options: ["Propofol", "Succinylcholine", "Thiopentone", "Midazolam"],
-    correctAnswerIndex: 1,
-    explanation: "Succinylcholine and Halothane are classic triggers.",
-    subject: "Anesthesia",
-    topic: "Complications"
-  },
-  {
-    id: 19003,
-    text: "The color coding for Oxygen cylinder is:",
-    options: ["Black body with white shoulder", "Blue", "Grey", "Black"],
-    correctAnswerIndex: 0,
-    explanation: "Oxygen cylinders have a black body with a white shoulder.",
-    subject: "Anesthesia",
-    topic: "Equipment"
-  }
-];
+// ---------------------------------------------------------------------------
+// GENERATION LOGIC
+// ---------------------------------------------------------------------------
 
 /**
- * Retrieves a set of questions for a specific subject.
- * Simulates a massive 5000+ question bank by procedurally generating 
- * permutations if the requested count exceeds the unique seed questions.
+ * Generates the full Question bank by expanding the template data.
+ * This allows us to have hundreds of unique questions without massive code files.
+ */
+const generateBank = (): Question[] => {
+  const bank: Question[] = [];
+  let idCounter = 1000;
+
+  Object.entries(SUBJECT_CONTENT).forEach(([subject, templates]) => {
+    templates.forEach(t => {
+      bank.push({
+        id: idCounter++,
+        text: t.q,
+        options: [t.a, ...t.d].sort(() => Math.random() - 0.5), // Shuffle options
+        correctAnswerIndex: 0, // We need to find the index after shuffle
+        explanation: t.e,
+        subject: subject,
+        topic: t.topic
+      });
+    });
+  });
+
+  // Fix correct answer index after shuffle
+  return bank.map(q => {
+    const originalAnswer = SUBJECT_CONTENT[q.subject]
+        .find(t => t.q === q.text)?.a;
+    
+    return {
+      ...q,
+      correctAnswerIndex: q.options.indexOf(originalAnswer || "")
+    };
+  });
+};
+
+// Initialize the bank once
+const FULL_QUESTION_BANK = generateBank();
+
+/**
+ * Retrieves questions for a subject.
+ * Simulates "infinite" questions by recycling content with unique IDs if requested count is high.
  */
 export const getQuestionsForSubject = (subject: string | 'Mixed', count: number): Question[] => {
-  let pool: Question[] = [];
-  
-  if (subject === 'Mixed') {
-    pool = QUESTION_BANK;
-  } else {
-    pool = QUESTION_BANK.filter(q => q.subject === subject);
-  }
+  let pool = subject === 'Mixed' 
+    ? FULL_QUESTION_BANK 
+    : FULL_QUESTION_BANK.filter(q => q.subject === subject);
 
   if (pool.length === 0) return [];
 
-  // Logic to simulate a massive bank:
-  // If we need more questions than we have unique seeds, we cycle through them
-  // but assign unique IDs to ensure they function correctly as distinct practice items.
-  // In a real backend, this would fetch from a DB of 95,000 items.
   const results: Question[] = [];
   
+  // Logic to fill the requested count
   for (let i = 0; i < count; i++) {
-    // Pick a random question from the available pool
-    const randomQ = pool[Math.floor(Math.random() * pool.length)];
+    // Pick a question (cyclically if count > pool size)
+    const baseQ = pool[i % pool.length];
     
-    // Create a new instance with a unique ID to simulate fetching a new Q from a massive DB
-    // We preserve the content but ensure the system treats it as a valid distinct entity
+    // Create a unique instance
+    // If we are looping (i >= pool.length), we are effectively "practicing again"
+    // but the system treats it as a new entry.
     results.push({
-      ...randomQ,
-      id: parseInt(`${randomQ.id}${Date.now().toString().slice(-4)}${i}`), // Generate unique ID
+      ...baseQ,
+      id: parseInt(`${baseQ.id}${i}${Date.now().toString().slice(-4)}`), // Unique ID for React keys
+      options: [...baseQ.options].sort(() => Math.random() - 0.5) // Reshuffle options for variety
     });
+
+    // Re-calculate correct index for the new instance
+    const newQ = results[results.length - 1];
+    const originalAnswer = SUBJECT_CONTENT[newQ.subject]?.find(t => t.q === newQ.text)?.a || baseQ.options[baseQ.correctAnswerIndex];
+    newQ.correctAnswerIndex = newQ.options.indexOf(originalAnswer);
   }
   
   return results;
@@ -919,7 +370,9 @@ export const getDiagnosticQuestions = (): Question[] => {
   return DIAGNOSTIC_QUESTIONS;
 };
 
-// Export the diagnostic questions list
+// ---------------------------------------------------------------------------
+// DIAGNOSTIC DATA (Static 20 Integrated Questions)
+// ---------------------------------------------------------------------------
 export const DIAGNOSTIC_QUESTIONS: Question[] = [
   {
     id: 1,
